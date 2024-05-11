@@ -1,98 +1,83 @@
-import time
-from selenium import webdriver
-from selenium.webdriver import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
+from utils.utils import *
+
+ip = get_variable_value("IP_FRONTEND")
+register_path = get_variable_value("REGISTER_USER")
+login_path = get_variable_value("LOGIN_USER")
+delay = 1
+until = 10
+register_url = f"http://{ip}{register_path}"
+login_url = f"http://{ip}{login_path}"
+sample_login = generate_login_data()
 
 driver = webdriver.Edge()
 
-driver.get("http://172.21.40.127:800/user/register")
-
-
-def wait_for(seconds):
-    time.sleep(seconds)
+driver.get(register_url)
 
 
 try:
     # Sprawdzenie tytułu
-    assert "React App" in driver.title
-    print("Test Passed: Title is correct.")
+    assert "React App" in driver.title, f"Oczekiwano tytułu zawierającego 'React App', otrzymano: {driver.title}"
+
+    log(True, "Title is correct.")
 
     # Sprawdzenie czy istnieje elemenet o id root, w naszym przypadku div
-    main_div = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "root"))
-    )
-    print("Test Passed: Main div is present.")
+    wait_for_element(driver, By.ID, "root")
+    log(True, "Main div is present.")
 
     # Znalezienie i kliknięcie przycisku
-    wait_for(2)  # Lepiej używać WebDriverWait
-    button = driver.find_element(By.CSS_SELECTOR, "button")  # TODO id
-    button.click()
+    click_button(driver, By.CSS_SELECTOR, "button")
+    log(True, "Successfully clicked the button")
 
+    wait_for(delay)
     # Sprawdzenie czy pojawia się nowa zawartość
-    wait_for(2)
-    new_content = WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.CLASS_NAME, "text-pink"))
-    )
-    assert new_content.is_displayed()
-    print("Test Passed: New content is displayed after clicking the button.")
+    wait_for_element(driver, By.CLASS_NAME, "text-pink")
+    log(True, "New content is displayed.")
 
     # Znaleznienie pola i wypełnienie go danymi
-    input_field = driver.find_element(By.ID, "firstName")
-    input_field.send_keys("Ktos")
+    enter_text(driver, By.ID, "firstName", sample_login.first_name)
 
-    input_field = driver.find_element(By.ID, "lastName")
-    input_field.send_keys("Nowak")
+    enter_text(driver, By.ID, "lastName", sample_login.last_name)
 
-    input_field = driver.find_element(By.ID, "login")
-    input_field.send_keys("login3")
+    enter_text(driver, By.ID, "login", sample_login.login)
 
-    input_field = driver.find_element(By.ID, "email")
-    input_field.send_keys("cos@cos.pl")
+    enter_text(driver, By.ID, "email", sample_login.email)
 
-    input_field = driver.find_element(By.CLASS_NAME, "PhoneInputInput")  # TODO id
-    input_field.send_keys("123456789")
+    enter_text(driver, By.CLASS_NAME, "PhoneInputInput", sample_login.phone_number)  # TODO id
 
-    input_field = driver.find_element(By.ID, "birthDate")
-    input_field.send_keys("01.01.1999")
+    enter_text(driver, By.ID, "birthDate", sample_login.birth_day)
 
-    input_field = driver.find_element(By.ID, "password")
-    input_field.send_keys("Test1234@")
+    enter_text(driver, By.ID, "password", sample_login.password)
 
-    input_field = driver.find_element(By.ID, "confirmPassword")
-    input_field.send_keys("Test1234@")
-    # "Odklikujemy pole"
-    input_field.send_keys(Keys.TAB)
+    enter_text(driver, By.ID, "confirmPassword", sample_login.password)
+    log(True, "Form filled correctly")
 
-    # Czekamy do 10 sekund na zmianę strony
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "button"))
-    )
+    # Czekamy na pojawienie się przycisku
+    universal_wait_for(driver, EC.element_to_be_clickable, By.CSS_SELECTOR, "button")
+    log(True, "Register button is clickable.")
 
-    button = driver.find_element(By.CSS_SELECTOR, "button")
-    button.click()
+    click_button(driver, By.CSS_SELECTOR, "button")
+    log(True, "Successfully clicked register button")
 
-    # Czekamy do 10 sekund na zmianę strony
-    WebDriverWait(driver, 10).until(
-        EC.url_changes("http://172.21.40.127:800/user/register")
-    )
+    # Czekamy na zmianę strony
+    universal_wait_for(driver, EC.url_changes, different_value=register_url)
+    log(True, "URL has changed successfully")
 
     # Sprawdzenie czy strona zmieniła się na taką jaką chcemy w naszym przypadku login
-    expected_url = "http://172.21.40.127:800/user/login"
-    current_url = driver.current_url
-    assert current_url == expected_url, f"URL did not change to expected. Current URL: {current_url}"
-    print("Test Passed: Form submitted successfully and result is correct.")
-
-# Przykład zmiany strony
-# driver.get("http://172.21.40.127:800/another-page")
-# wait_for(2)
-# assert "another-page" in driver.current_url
-# print("Test Passed: Navigation to another page is successful.")
+    assert driver.current_url == login_url, f"URL did not change to expected. Current URL: {driver.current_url}"
+    log(True, "Form submitted successfully and result is correct.")
 
 except Exception as e:
-    print("Test Failed:", str(e))
+    log(False, str(e))
+    print(f"Current URL: {driver.current_url}")
+    print(f"Page title: {driver.title}")
+    print("-----------------------")
+    print("Errors displayed on the website:")
+    print(get_text_from_elements_by_class(driver, By.CLASS_NAME, "text-pink"))
+    print("-----------------------")
+    print("Problem with following login data:")
+    print(sample_login.__str__())
+
 
 finally:
-    wait_for(5)
+    wait_for(delay)
     driver.quit()
