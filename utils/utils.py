@@ -1,7 +1,7 @@
+# import logging
 import os
 from dotenv import load_dotenv
 import time
-from faker.decode import unidecode
 from selenium import webdriver
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
@@ -9,10 +9,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
-from faker import Faker
-from DTOs.LoginDataDTO import LoginData
 
 load_dotenv()
+# logging.basicConfig(filename='test_log.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(message)s')
 
 
 def get_variable_value(var_key: str):
@@ -27,11 +26,13 @@ def wait_for(seconds):
     time.sleep(seconds)
 
 
-def log(result: bool, message: str):
-    if result:
-        print(f"[TEST PASSED] {message}")
+def log(message, success=True):
+    if success:
+        # logging.info("[TEST PASSED] " + message)
+        print("[TEST PASSED] " + message)
     else:
-        print(f"[TEST FAILED] {message}")
+        # logging.error("[TEST FAILED] " + message)
+        print("[TEST FAILED] " + message)
 
 
 def click_button(driver, selector_type, selector_value):
@@ -149,25 +150,5 @@ def get_text_from_elements_by_class(driver, selector_type, selector_value):
     return texts
 
 
-def generate_login_data():
-    fake = Faker('pl_PL')
-    first_name = fake.first_name()
-    last_name = fake.last_name()
-    login = unidecode(first_name).lower()[:3] + unidecode(last_name).lower()[:3]
-    email = fake.email()
-    phone_number = fake.phone_number().replace(' ', '')[-9:]
-    birth_day = fake.date_of_birth().strftime('%d.%m.%Y')
-    password = get_variable_value("TEST_PASSWORD")
-
-    return LoginData(first_name, last_name, login, email, phone_number, birth_day, password)
-
-
 if __name__ == "__main__":
-
-    def print_all_env_variables():
-        print("All variables:")
-        for key, value in get_all_variables():
-            print(f"{key}: {value}")
-
-
-    print_all_env_variables()
+    print()
