@@ -1,5 +1,6 @@
 from selenium import webdriver
 from Selenium.UserRegister import test_user_register
+from utils.utils import info
 
 
 def main():

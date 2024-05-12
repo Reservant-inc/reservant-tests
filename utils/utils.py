@@ -1,4 +1,4 @@
-# import logging
+import logging
 import os
 from dotenv import load_dotenv
 import time
@@ -11,7 +11,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 
 load_dotenv()
-# logging.basicConfig(filename='test_log.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(message)s')
+logging.basicConfig(filename='test_log.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 
 def get_variable_value(var_key: str):
@@ -26,13 +26,18 @@ def wait_for(seconds):
     time.sleep(seconds)
 
 
-def log(message, success=True):
+def result(message, success=True):
     if success:
-        # logging.info("[TEST PASSED] " + message)
+        logging.info("[TEST PASSED] " + message)
         print("[TEST PASSED] " + message)
     else:
-        # logging.error("[TEST FAILED] " + message)
+        logging.error("[TEST FAILED] " + message)
         print("[TEST FAILED] " + message)
+
+
+def info(message):
+    logging.info(message)
+    print(message)
 
 
 def click_button(driver, selector_type, selector_value):

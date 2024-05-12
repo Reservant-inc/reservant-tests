@@ -17,19 +17,19 @@ def test_user_register(driver):
         # Sprawdzenie tytułu
         assert "React App" in driver.title, f"Oczekiwano tytułu zawierającego 'React App', otrzymano: {driver.title}"
 
-        log("Title is correct.")
+        result("Title is correct.")
 
         # Sprawdzenie czy istnieje elemenet o id root, w naszym przypadku div
         wait_for_element(driver, By.ID, "root")
-        log("Main div is present.")
+        result("Main div is present.")
 
         # Znalezienie i kliknięcie przycisku
         click_button(driver, By.CSS_SELECTOR, "button")
-        log("Successfully clicked the button")
+        result("Successfully clicked the button")
 
         # Sprawdzenie czy pojawia się nowa zawartość
         wait_for_element(driver, By.CLASS_NAME, "text-pink")
-        log("New content is displayed.")
+        result("New content is displayed.")
 
         wait_for(delay)
 
@@ -49,37 +49,37 @@ def test_user_register(driver):
         enter_text(driver, By.ID, "password", sample_login.password)
 
         enter_text(driver, By.ID, "confirmPassword", sample_login.password)
-        log("Form filled correctly")
+        result("Form filled correctly")
 
         wait_for(delay)
 
         # Czekamy na pojawienie się przycisku
         universal_wait_for(driver, EC.element_to_be_clickable, By.CSS_SELECTOR, "button")
-        log("Register button is clickable.")
+        result("Register button is clickable.")
 
         click_button(driver, By.CSS_SELECTOR, "button")
-        log("Successfully clicked register button")
+        result("Successfully clicked register button")
 
         # Czekamy na zmianę strony
         universal_wait_for(driver, EC.url_changes, different_value=register_url)
-        log("URL has changed successfully")
+        result("URL has changed successfully")
 
         # Sprawdzenie czy strona zmieniła się na taką jaką chcemy w naszym przypadku login
         assert driver.current_url == login_url, f"URL did not change to expected. Current URL: {driver.current_url}"
-        log("Form submitted successfully and result is correct.")
+        result("Form submitted successfully and result is correct.")
 
         return True  # Test przeszedł
 
     except Exception as e:
-        log(str(e), False)
-        print(f"Current URL: {driver.current_url}")
-        print(f"Page title: {driver.title}")
+        result(str(e), False)
+        info(f"Current URL: {driver.current_url}")
+        info(f"Page title: {driver.title}")
         print("-----------------------")
-        print("Errors displayed on the website:")
-        print(get_text_from_elements_by_class(driver, By.CLASS_NAME, "text-pink"))
+        info("Errors displayed on the website:")
+        info(get_text_from_elements_by_class(driver, By.CLASS_NAME, "text-pink"))
         print("-----------------------")
-        print("Problem with following login data:")
-        print(sample_login.__str__())
+        info("Problem with following login data:")
+        info(sample_login)
         return False  # Test nieudany
 
 
