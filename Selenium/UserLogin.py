@@ -51,8 +51,8 @@ def test_user_login(driver):
         info(f"Page title: {driver.title}")
         print("-----------------------")
         info("Errors displayed on the website:")
-        print("to be implemented!") # TODO: no "Invalid credentials" error
-        #info(get_text_from_elements_by_class(driver, By.CLASS_NAME, "text-pink"))
+        print("to be implemented!")
+        info(get_text_from_elements_by_class(driver, By.CLASS_NAME, "text-pink"))
         print("-----------------------")
         info("Problem with following login data:")
         info(f"Login: {email}, password: Pa$$w0rd")
