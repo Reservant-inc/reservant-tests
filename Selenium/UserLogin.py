@@ -4,11 +4,12 @@ import random
 ip = get_variable_value("IP_FRONTEND")
 login_path = get_variable_value("LOGIN_USER")
 delay = int(get_variable_value("DELAY"))
-until = 10
 login_url = f"http://{ip}{login_path}"
 
 
 def test_user_login(driver):
+    info("USER LOGIN TEST")
+    email = "Not selected yet"
     driver.get(login_url)
     try:
         # Sprawdzenie tytułu
@@ -21,9 +22,8 @@ def test_user_login(driver):
         wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, "button")
 
-        wait_for(delay)
-        new_content = wait_for_element(driver, By.ID, "root")
-        assert new_content.is_displayed()
+        # Sprawdzenie czy pojawia się nowa zawartość
+        wait_for_element(driver, By.CLASS_NAME, "text-pink")
         result("New content is displayed after clicking the button.")
 
         # Wybór losowego adresu email
@@ -31,8 +31,6 @@ def test_user_login(driver):
         enter_text(driver, By.ID, "login", email)
 
         enter_text(driver, By.ID, "password", "Pa$$w0rd")
-
-        driver.find_element(By.ID, "password").send_keys(Keys.TAB)  # TODO: entering tab via enter_text
 
         universal_wait_for(driver, EC.element_to_be_clickable, By.CSS_SELECTOR, "button")
         result("Login button is clickable.")
@@ -47,11 +45,11 @@ def test_user_login(driver):
 
     except Exception as e:
         result(str(e), False)
+        info("User login test failed")
         info(f"Current URL: {driver.current_url}")
         info(f"Page title: {driver.title}")
         print("-----------------------")
         info("Errors displayed on the website:")
-        print("to be implemented!")
         info(get_text_from_elements_by_class(driver, By.CLASS_NAME, "text-pink"))
         print("-----------------------")
         info("Problem with following login data:")
@@ -62,7 +60,7 @@ def test_user_login(driver):
         wait_for(delay)
 
 
-def wybierz_email():  #Funkcja wybierająca ranomowy login z podanych
+def wybierz_email():  # Funkcja wybierająca ranomowy login z podanych
     adresy_email = ["JD", "customer", "support@mail.com", "manager@mail.com", "JD+hall", "JD+backdoors", "JD+employee"]
     wybrany_email = random.choice(adresy_email)
     return wybrany_email
