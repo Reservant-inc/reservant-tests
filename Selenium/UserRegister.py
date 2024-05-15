@@ -85,3 +85,9 @@ def test_user_register(driver):
 
     finally:
         wait_for(delay)
+
+
+if __name__ == "__main__":
+    driver = webdriver.Edge()
+    test_user_register(driver)
+    driver.quit()
