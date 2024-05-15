@@ -5,13 +5,13 @@ ip = get_variable_value("IP_FRONTEND")
 register_path = get_variable_value("REGISTER_USER")
 login_path = get_variable_value("LOGIN_USER")
 delay = int(get_variable_value("DELAY"))
-until = 10
 register_url = f"http://{ip}{register_path}"
 login_url = f"http://{ip}{login_path}"
 sample_login = LoginData.generate_login_data()
 
 
 def test_user_register(driver):
+    info("USER REGISTER TEST")
     driver.get(register_url)
     try:
         # Sprawdzenie tytułu
@@ -72,6 +72,7 @@ def test_user_register(driver):
 
     except Exception as e:
         result(str(e), False)
+        info("User register test failed")
         info(f"Current URL: {driver.current_url}")
         info(f"Page title: {driver.title}")
         print("-----------------------")
