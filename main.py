@@ -2,6 +2,7 @@ from selenium import webdriver
 from Selenium.UserRegister import test_user_register
 from Selenium.UserLogin import test_user_login
 from Services.APIService import APIService
+from Services.RestaurantGroupService import RestaurantGroupService
 from Services.RestaurantService import RestaurantService
 
 
@@ -22,6 +23,14 @@ def main():
         restaurant_service = RestaurantService(api_service)
         restaurants = restaurant_service.get_restaurants()
         print("Restaurants:", restaurants)
+
+        print("=========================================")
+
+        # Fetching restaurant groups via RestaurantGroupService
+        restaurant_group_service = RestaurantGroupService(api_service)
+        groups = restaurant_group_service.get_restaurants_groups()
+        print("Groups:", groups)
+
     else:
         print("Login failed.")
 
