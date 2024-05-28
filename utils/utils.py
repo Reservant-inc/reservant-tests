@@ -52,12 +52,14 @@ def login(driver, username, password):
     ip = get_variable_value('IP_FRONTEND')
     login_path = get_variable_value('LOGIN_USER')
     login_url = f"http://{ip}{login_path}"
+    delay = int(get_variable_value('DELAY'))
 
     driver.get(login_url)
 
     enter_text(driver, By.ID, "login", username)
     enter_text(driver, By.ID, "password", password)
     click_button(driver, By.CSS_SELECTOR, "button")
+    wait_for(delay)
 
 
 def click_button(driver, selector_type, selector_value):
