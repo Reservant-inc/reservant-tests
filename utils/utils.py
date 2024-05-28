@@ -59,7 +59,7 @@ def login(driver, username, password):
     enter_text(driver, By.ID, "login", username)
     enter_text(driver, By.ID, "password", password)
     click_button(driver, By.CSS_SELECTOR, "button")
-    wait_for(delay)
+    universal_wait_for(driver, EC.url_changes, different_value=login_url)
 
 
 def click_button(driver, selector_type, selector_value):
