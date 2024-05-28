@@ -40,6 +40,26 @@ def info(message):
     print(message)
 
 
+def login(driver, username, password):
+    """
+    Loguje użytkownika na podane dane.
+
+    Args:
+    driver (WebDriver): Instancja WebDrivera używana do interakcji z przeglądarką.
+    username (str): Nazwa użytkownika używana do logowania.
+    password (str): Hasło użytkownika używane do logowania..
+    """
+    ip = get_variable_value('IP_FRONTEND')
+    login_path = get_variable_value('LOGIN_USER')
+    login_url = f"http://{ip}{login_path}"
+
+    driver.get(login_url)
+
+    enter_text(driver, By.ID, "login", username)
+    enter_text(driver, By.ID, "password", password)
+    click_button(driver, By.CSS_SELECTOR, "button")
+
+
 def click_button(driver, selector_type, selector_value):
     """
     Znajduje i klika przycisk na stronie używając podanego selektora CSS.
