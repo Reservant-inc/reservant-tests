@@ -159,4 +159,4 @@ cython_debug/
 .idea/
 
 # My files
-bearer_token.pkl
+barrer_token.pkl
