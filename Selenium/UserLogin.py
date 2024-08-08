@@ -3,8 +3,10 @@ import random
 
 ip = get_variable_value("IP_FRONTEND")
 login_path = get_variable_value("LOGIN_USER")
+register_path = get_variable_value("REGISTER_USER")
 delay = int(get_variable_value("DELAY"))
 login_url = f"http://{ip}{login_path}"
+register_url = f"http://{ip}{register_path}"
 
 
 def test_user_login(driver):
@@ -20,11 +22,25 @@ def test_user_login(driver):
         result("Main div is present. ")
 
         wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, "button")
+        # LOGIN
+        # Znalezienie i kliknięcie przycisku
+        click_text_field(driver, By.ID, "login")
+        result("Successfully clicked the login text field")
+
+        press_tab_key(driver)
 
         # Sprawdzenie czy pojawia się nowa zawartość
-        wait_for_element(driver, By.CLASS_NAME, "text-pink")
-        result("New content is displayed after clicking the button.")
+        wait_for_element(driver, By.ID, "login-helper-text")
+        result("Login error is displayed.")
+
+        # PASSWORD
+        click_text_field(driver, By.ID, "password")
+        result("Successfully clicked the password text field")
+
+        press_tab_key(driver)
+
+        wait_for_element(driver, By.ID, "password-helper-text")
+        result("Password error is displayed.")
 
         # Wybór losowego adresu email
         email = wybierz_email()
@@ -32,25 +48,37 @@ def test_user_login(driver):
 
         enter_text(driver, By.ID, "password", "Pa$$w0rd")
 
-        universal_wait_for(driver, EC.element_to_be_clickable, By.CSS_SELECTOR, "button")
+        universal_wait_for(driver, EC.element_to_be_clickable, By.ID, "LoginLoginButton")
         result("Login button is clickable.")
 
-        click_button(driver, By.CSS_SELECTOR, "button")
+        click_button(driver, By.ID, "LoginLoginButton")
 
         # Zmiana strony
         universal_wait_for(driver, EC.url_changes, different_value=login_url)
         result("URL has changed successfully - user has logged in!")
 
-        # ================
+        # ==========================
+        # Return to the login page and click "Sign In"
+        click_button(driver, By.ID, "ToolsButton")
+        click_button(driver, By.ID, "logoutDropdownItem")
+        click_button(driver, By.ID, "serverLink")
+        result("Successfully logged out and returned to login site.")
+        wait_for(delay)
+        universal_wait_for(driver, EC.url_to_be, different_value=login_url)
+        result("URL has changed successfully to the login page!")
+        wait_for_element(driver, By.ID, "root")
+        click_button(driver, By.ID, "login-notRegistered-link")
+        result("Successfully clicked register button")
+
+        # Verify URL change
+        universal_wait_for(driver, EC.url_to_be, different_value=register_url)
+        result("URL has changed successfully to the register page!")
 
     except Exception as e:
         result(str(e), False)
         info("User login test failed")
         info(f"Current URL: {driver.current_url}")
         info(f"Page title: {driver.title}")
-        print("-----------------------")
-        info("Errors displayed on the website:")
-        info(get_text_from_elements_by_class(driver, By.CLASS_NAME, "text-pink"))
         print("-----------------------")
         info("Problem with following login data:")
         info(f"Login: {email}, password: Pa$$w0rd")
