@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import time
 from selenium import webdriver
 from selenium.common import TimeoutException
-from selenium.webdriver import Keys
+from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -154,6 +154,36 @@ def get_text_from_elements_by_class(driver, selector_type, selector_value):
 
     return texts
 
+
+def click_text_field(driver, selector_type, selector_value):
+    """
+    Znajduje i klika pole tekstowe na stronie używając podanego selektora.
+
+    Args:
+    driver (WebDriver): Instancja WebDrivera używana do interakcji z przeglądarką.
+    selector_type (By): Typ selektora (np. By.ID, By.CSS_SELECTOR).
+    selector_value (str): Wartość selektora.
+
+    Raises:
+    NoSuchElementException: Jeśli pole tekstowe nie zostanie znalezione.
+    """
+    try:
+        text_field = driver.find_element(selector_type, selector_value)
+        text_field.click()
+    except NoSuchElementException:
+        raise NoSuchElementException(f"Text field with {selector_type} '{selector_value}' not found.")
+
+
+def press_tab_key(driver):
+    """
+    Symuluje naciśnięcie klawisza TAB w przeglądarce.
+
+    Args:
+    driver (WebDriver): Instancja WebDrivera używana do interakcji z przeglądarką.
+    """
+    actions = ActionChains(driver)
+    actions.send_keys(Keys.TAB)
+    actions.perform()
 
 if __name__ == "__main__":
     print()
