@@ -109,9 +109,8 @@ def test_user_register(driver):
 
         press_tab_key(driver)
 
-        #TODO nie ma obsługi na stronie
-        # wait_for_element(driver, By.ID, "userRegister-phoneNumber-field")
-        # result("Phone error is displayed.")
+        wait_for_element(driver, By.ID, "userRegister-phoneNumber-field")
+        result("Phone error is displayed.")
 
         # DATE
         click_text_field(driver, By.ID, "birthDate")
@@ -119,9 +118,8 @@ def test_user_register(driver):
 
         press_tab_key(driver)
 
-        #TODO nie ma obsługi na stronie
-        # wait_for_element(driver, By.ID, "userRegister-phoneNumber-field")
-        # result("Birth date error is displayed.")
+        wait_for_element(driver, By.ID, "userRegister-phoneNumber-field")
+        result("Birth date error is displayed.")
 
         enter_text(driver, By.ID, "firstName", sample_login.first_name)
 
