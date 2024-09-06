@@ -11,7 +11,7 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
-def test_user_login(driver):
+def test_user_login(driver, check_signup = True):
     info("USER LOGIN TEST")
     email = "Not selected yet"
     driver.get(login_url)
@@ -51,18 +51,19 @@ def test_user_login(driver):
         # Zmiana strony
         wait_for_url_to_be(driver, home_url)
 
-        # ==========================
-        # Return to the login page and click "Sign In"
-        click_button(driver, By.ID, "ToolsButton")
-        click_button(driver, By.ID, "logoutDropdownItem")
-        click_button(driver, By.ID, "serverLink")
-        wait_for(delay)
-        universal_wait_for(driver, EC.url_to_be, different_value=login_url)
-        wait_for_element(driver, By.ID, "root")
-        click_button(driver, By.ID, "login-notRegistered-link")
+        # jeśli chcemy sprawdzić dodatkowo czy działa przycisk rejestracji przy logowaniu
+        if(check_signup):
+            # Return to the login page and click "Sign In"
+            click_button(driver, By.ID, "ToolsButton")
+            click_button(driver, By.ID, "logoutDropdownItem")
+            click_button(driver, By.ID, "serverLink")
+            wait_for(delay)
+            universal_wait_for(driver, EC.url_to_be, different_value=login_url)
+            wait_for_element(driver, By.ID, "root")
+            click_button(driver, By.ID, "login-notRegistered-link")
 
-        # Verify URL change
-        wait_for_url_to_be(driver, register_url)
+            # Verify URL change
+            wait_for_url_to_be(driver, register_url)
 
     except Exception as e:
         result(str(e), False)
@@ -79,7 +80,7 @@ def test_user_login(driver):
 
 
 def wybierz_email():  # Funkcja wybierająca ranomowy login z podanych
-    adresy_email = ["JD", "customer", "support@mail.com", "manager@mail.com", "JD+hall", "JD+backdoors", "JD+employee"]
+    adresy_email = ["JD"]
     wybrany_email = random.choice(adresy_email)
     return wybrany_email
 

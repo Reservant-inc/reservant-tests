@@ -7,6 +7,7 @@ from selenium.common import TimeoutException
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 
@@ -16,6 +17,9 @@ logging.basicConfig(filename='test_log.log', level=logging.INFO, format='%(ascti
 
 def get_variable_value(var_key: str):
     return os.getenv(var_key)
+
+
+timeout = int(get_variable_value("TIMEOUT"))
 
 
 def get_all_variables():
@@ -43,13 +47,18 @@ def info(message):
 def click_button(driver, selector_type, selector_value, critical=True):
     """
     Znajduje i klika przycisk na stronie używając podanego selektora.
+    Czeka maksymalnie TIMEOUT sekund, aż przycisk stanie się dostępny.
     Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
     """
     try:
+        # Oczekiwanie na element
+        wait_for_element(driver, selector_type, selector_value, critical)
+
+        # Znajdowanie elementu po oczekiwaniu
         button = driver.find_element(selector_type, selector_value)
         button.click()
         result(f"Successfully clicked button with {selector_type} '{selector_value}'")
-    except NoSuchElementException as e:
+    except (NoSuchElementException, TimeoutException) as e:
         result(f"Couldn't click button with {selector_type} '{selector_value}': {str(e)}", False)
         if critical:
             raise Exception(f"Couldn't click button with {selector_type} '{selector_value}'") from e
@@ -60,7 +69,6 @@ def wait_for_element(driver, selector_type, selector_value, critical=True):
     Czeka na obecność elementu na stronie w określonym czasie.
     Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
     """
-    timeout = int(get_variable_value("TIMEOUT"))
 
     try:
         element = WebDriverWait(driver, timeout).until(
@@ -69,9 +77,12 @@ def wait_for_element(driver, selector_type, selector_value, critical=True):
         result(f"Element with {selector_type} '{selector_value}' is present on the page.")
         return element
     except TimeoutException as e:
-        result(f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds: {str(e)}", False)
+        result(
+            f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds: {str(e)}",
+            False)
         if critical:
-            raise TimeoutException(f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds.") from e
+            raise TimeoutException(
+                f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds.") from e
 
 
 def enter_text(driver, selector_type, selector_value, text, critical=True):
@@ -80,6 +91,9 @@ def enter_text(driver, selector_type, selector_value, text, critical=True):
     Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
     """
     try:
+        # Oczekiwanie na element
+        wait_for_element(driver, selector_type, selector_value, critical)
+
         input_field = driver.find_element(selector_type, selector_value)
         input_field.send_keys(text)
         input_field.send_keys(Keys.TAB)
@@ -87,15 +101,16 @@ def enter_text(driver, selector_type, selector_value, text, critical=True):
     except NoSuchElementException as e:
         result(f"Couldn't find element with {selector_type} '{selector_value}' to enter text: {str(e)}", False)
         if critical:
-            raise NoSuchElementException(f"Couldn't find element with {selector_type} '{selector_value}' to enter text.") from e
+            raise NoSuchElementException(
+                f"Couldn't find element with {selector_type} '{selector_value}' to enter text.") from e
 
 
-def universal_wait_for(driver, condition_type, selector_type=None, selector_value=None, different_value=None, critical=True):
+def universal_wait_for(driver, condition_type, selector_type=None, selector_value=None, different_value=None,
+                       critical=True):
     """
     Uniwersalna funkcja oczekiwania, która czeka na spełnienie różnych warunków.
     Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
     """
-    timeout = int(get_variable_value("TIMEOUT"))
 
     try:
         if selector_value is not None and selector_type is not None:
@@ -109,9 +124,12 @@ def universal_wait_for(driver, condition_type, selector_type=None, selector_valu
         result(f"Condition {condition_type.__name__} met for element with {selector_type} '{selector_value}'")
         return element
     except TimeoutException as e:
-        result(f"Condition {condition_type.__name__} not met for element with {selector_type} '{selector_value}' within {timeout} seconds: {str(e)}", False)
+        result(
+            f"Condition {condition_type.__name__} not met for element with {selector_type} '{selector_value}' within {timeout} seconds: {str(e)}",
+            False)
         if critical:
-            raise TimeoutException(f"Condition {condition_type.__name__} not met for element with {selector_type} '{selector_value}' within {timeout} seconds.") from e
+            raise TimeoutException(
+                f"Condition {condition_type.__name__} not met for element with {selector_type} '{selector_value}' within {timeout} seconds.") from e
 
 
 def click_text_field(driver, selector_type, selector_value, critical=True):
@@ -120,6 +138,9 @@ def click_text_field(driver, selector_type, selector_value, critical=True):
     Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
     """
     try:
+        # Oczekiwanie na element
+        wait_for_element(driver, selector_type, selector_value, critical)
+
         text_field = driver.find_element(selector_type, selector_value)
         text_field.click()
         result(f"Successfully clicked text field with {selector_type} '{selector_value}'")
@@ -161,6 +182,9 @@ def get_text_from_elements_by_class(driver, selector_type, selector_value, criti
     NoSuchElementException: Jeśli elementy nie zostaną znalezione (jeśli critical=True).
     """
     try:
+        # Oczekiwanie na element
+        wait_for_element(driver, selector_type, selector_value, critical)
+
         # Znajdowanie elementów po podanym selektorze
         elements = driver.find_elements(selector_type, selector_value)
 
@@ -202,6 +226,7 @@ def check_page_title(driver, expected_title, critical=False):
         if critical:
             raise e
 
+
 def wait_for_url_to_be(driver, expected_url, critical=True):
     """
     Czeka na zmianę URL do oczekiwanego w określonym czasie.
@@ -213,16 +238,73 @@ def wait_for_url_to_be(driver, expected_url, critical=True):
     critical (bool): Określa, czy błąd ma być traktowany jako krytyczny. Domyślnie True.
     """
 
-    timeout = int(get_variable_value("TIMEOUT"))
-
     try:
         # Czekamy, aż URL stanie się oczekiwanym
         WebDriverWait(driver, timeout).until(EC.url_to_be(expected_url))
         result(f"URL changed to expected: '{expected_url}'")
     except TimeoutException as e:
-        result(f"URL did not change to expected within {timeout} seconds. Expected: '{expected_url}', but got: '{driver.current_url}'", False)
+        result(
+            f"URL did not change to expected within {timeout} seconds. Expected: '{expected_url}', but got: '{driver.current_url}'",
+            False)
         if critical:
-            raise TimeoutException(f"URL did not change to expected within {timeout} seconds. Expected: '{expected_url}', but got: '{driver.current_url}'") from e
+            raise TimeoutException(
+                f"URL did not change to expected within {timeout} seconds. Expected: '{expected_url}', but got: '{driver.current_url}'") from e
+
+
+def verify_unique_column_values(driver, column_selector, critical=True):
+    """
+    Sprawdza, czy wszystkie wartości w danej kolumnie są unikalne.
+
+    Args:
+    driver (webdriver): Instancja WebDriver używana do kontroli przeglądarki.
+    column_selector (str): Selektor CSS dla elementów w danej kolumnie.
+    critical (bool): Określa, czy błąd ma być krytyczny. Domyślnie ustawiony na True.
+
+    Returns:
+    None
+    """
+    try:
+        # Znajdź wszystkie elementy w kolumnie
+        wait_for_element(driver, By.CSS_SELECTOR, column_selector, critical)
+        elements = driver.find_elements(By.CSS_SELECTOR, column_selector)
+
+        # Pobierz wartości tekstowe z elementów
+        values = [element.text for element in elements]
+
+        # Sprawdź unikalność wartości
+        if len(values) == len(set(values)):
+            result(f"All values in the column '{column_selector}' are unique.")
+        else:
+            result(f"Duplicate values found in the column '{column_selector}'.", False)
+            if critical:
+                raise Exception(f"Duplicate values found in the column '{column_selector}'.")
+    except Exception as e:
+        result(f"Failed to verify uniqueness in column '{column_selector}': {str(e)}", False)
+        if critical:
+            raise e
+
+
+def select_option_by_visible_text(driver, selector_type, selector_value, text, critical=True):
+    """
+    Wybiera opcję w elemencie <select> na podstawie widocznego tekstu.
+    Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
+
+    Args:
+    driver (webdriver): Instancja WebDriver.
+    select_id (str): ID elementu <select>.
+    text (str): Tekst widoczny w opcji, którą chcemy wybrać.
+    critical (bool): Jeśli True, podnosi wyjątek w przypadku niepowodzenia, inaczej tylko loguje.
+    """
+    try:
+        wait_for_element(driver, selector_type, selector_value, critical)
+        select_element = driver.find_element(selector_type, selector_value)
+        select = Select(select_element)
+        select.select_by_visible_text(text)
+        result(f"Successfully selected option with text '{text}' from '{selector_value}'")
+    except Exception as e:
+        result(f"Failed to select option with text '{text}' from '{selector_value}': {str(e)}", False)
+        if critical:
+            raise Exception(f"Failed to select option with text '{text}' from '{selector_value}'") from e
 
 
 if __name__ == "__main__":
