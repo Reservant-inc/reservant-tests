@@ -1,5 +1,7 @@
 import logging
 import os
+import random
+
 from dotenv import load_dotenv
 import time
 from selenium import webdriver
@@ -305,6 +307,97 @@ def select_option_by_visible_text(driver, selector_type, selector_value, text, c
         result(f"Failed to select option with text '{text}' from '{selector_value}': {str(e)}", False)
         if critical:
             raise Exception(f"Failed to select option with text '{text}' from '{selector_value}'") from e
+
+
+def upload_file(driver, selector_type, selector_value, file_path, critical=True):
+    """
+    Wstawia plik do elementu na stronie za pomocą send_keys.
+    Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
+
+    Args:
+    driver (webdriver): Instancja WebDriver używana do kontroli przeglądarki.
+    selector_type (By): Typ selektora używany do znalezienia elementu (np. By.CSS_SELECTOR, By.ID).
+    selector_value (str): Wartość selektora.
+    file_path (str): Ścieżka do pliku, który ma zostać wstawiony.
+    critical (bool): Jeśli True, rzuca wyjątek przy niepowodzeniu. Jeśli False, loguje błąd.
+    """
+    try:
+        wait_for_element(driver, selector_type, selector_value, critical)
+
+        # Konwertujemy ścieżkę na absolutną, jeśli nie jest już absolutna
+        absolute_file_path = os.path.abspath(file_path)
+
+        file_input = driver.find_element(selector_type, selector_value)
+        file_input.send_keys(absolute_file_path)
+        result(f"File successfully uploaded using {selector_type} '{selector_value}'")
+    except NoSuchElementException as e:
+        result(f"Could not upload file using {selector_type} '{selector_value}': {str(e)}", False)
+        if critical:
+            raise Exception(f"File upload failed for {selector_type} '{selector_value}'") from e
+
+
+def select_random_tags(driver, selector_type, selector_value, tag_count, critical=True):
+    """
+    Zaznacza losowe checkboxy (tagi) na stronie.
+
+    Args:
+    driver (webdriver): Instancja WebDriver używana do kontroli przeglądarki.
+    tag_count (int): Liczba losowych tagów do zaznaczenia.
+    selector_type (By): Typ selektora (np. By.ID, By.CSS_SELECTOR, By.XPATH).
+    selector_value (str): Wartość selektora używana do wyboru checkboxów.
+    critical (bool): Jeśli True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
+    """
+    try:
+        wait_for_element(driver, selector_type, selector_value, critical)
+        # Znajdujemy wszystkie checkboxy przy użyciu przekazanego selektora
+        checkboxes = driver.find_elements(selector_type, selector_value)
+
+        # Jeśli liczba checkboxów jest mniejsza niż wymagana liczba tagów do zaznaczenia
+        if len(checkboxes) < tag_count:
+            result(f"Not enough tags available. Found {len(checkboxes)}, but need {tag_count}.", False)
+            if critical:
+                raise Exception(f"Not enough tags available to select {tag_count} random tags.")
+            return
+
+        # Wybieramy losowe checkboxy
+        random_tags = random.sample(checkboxes, tag_count)
+
+        # Klikamy losowe checkboxy
+        for tag in random_tags:
+            tag.click()
+
+        result(f"Successfully selected {tag_count} random tags.")
+    except NoSuchElementException as e:
+        result(f"Failed to select random tags: {str(e)}", False)
+        if critical:
+            raise Exception(f"Failed to select random tags.") from e
+
+
+def check_checkbox(driver, selector_type, selector_value, critical=True):
+    """
+    Zaznacza checkbox, jeśli nie jest jeszcze zaznaczony.
+
+    Args:
+    driver (webdriver): Instancja WebDriver używana do kontroli przeglądarki.
+    selector_type (By): Typ selektora (np. By.ID, By.CSS_SELECTOR, By.XPATH).
+    selector_value (str): Wartość selektora używana do wyboru checkboxa.
+    critical (bool): Jeśli True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
+    """
+    try:
+        wait_for_element(driver, selector_type, selector_value, critical)
+        # Znajdujemy checkbox
+        checkbox = driver.find_element(selector_type, selector_value)
+
+        # Sprawdzamy, czy checkbox nie jest zaznaczony
+        if not checkbox.is_selected():
+            checkbox.click()
+            result(f"Checkbox with {selector_type} '{selector_value}' is checked.")
+        else:
+            result(f"Checkbox with {selector_type} '{selector_value}' is already checked.")
+    except NoSuchElementException as e:
+        result(f"Couldn't find checkbox with {selector_type} '{selector_value}': {str(e)}", False)
+        if critical:
+            raise Exception(f"Couldn't find checkbox with {selector_type} '{selector_value}'") from e
 
 
 if __name__ == "__main__":

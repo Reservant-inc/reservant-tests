@@ -2,18 +2,19 @@ import random
 from faker import Faker
 
 class RestaurantRegistrationData:
-    def __init__(self, name, address, postal_code, city, nip, business_type):
+    def __init__(self, name, address, postal_code, city, nip, business_type, description):
         self.name = name
         self.address = address
         self.postal_code = postal_code
         self.city = city
         self.nip = nip
         self.business_type = business_type
+        self.description = description
 
     def __str__(self):
         return (f"RestaurantRegistrationData(name={self.name}, address={self.address}, "
                 f"postal_code={self.postal_code}, city={self.city}, nip={self.nip}, "
-                f"business_type={self.business_type})")
+                f"business_type={self.business_type}, description={self.description})")
 
     @staticmethod
     def generate_nip():
@@ -50,9 +51,6 @@ class RestaurantRegistrationData:
         # Losowanie typu działalności
         business_type = random.choice(["Restaurant", "Bar", "Cafe"])
 
-        return RestaurantRegistrationData(name, address, postal_code, city, nip, business_type)
+        description = fake.paragraph(nb_sentences=1)
 
-
-# Przykład użycia
-restaurant_data = RestaurantRegistrationData.generate_restaurant_data()
-print(restaurant_data)
+        return RestaurantRegistrationData(name, address, postal_code, city, nip, business_type, description)
