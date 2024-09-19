@@ -5,6 +5,7 @@ ip = get_variable_value("IP_FRONTEND")
 login_path = get_variable_value("LOGIN_USER")
 register_path = get_variable_value("REGISTER_USER")
 delay = int(get_variable_value("DELAY"))
+
 login_url = f"http://{ip}{login_path}"
 register_url = f"http://{ip}{register_path}"
 home_path = get_variable_value("HOME_PATH")
@@ -12,8 +13,12 @@ home_url = f"http://{ip}{home_path}"
 
 
 def test_user_login(driver, check_signup = True):
+    """
+    Dokumentacja - czyli co to robi
+    """
     info("USER LOGIN TEST")
     email = "Not selected yet"
+
     driver.get(login_url)
     try:
         # Sprawdzenie tytułu
@@ -44,6 +49,7 @@ def test_user_login(driver, check_signup = True):
 
         enter_text(driver, By.ID, "password", "Pa$$w0rd")
 
+        # Sprawdzenie, czy przycisk jest klikalny
         universal_wait_for(driver, EC.element_to_be_clickable, By.ID, "LoginLoginButton")
 
         click_button(driver, By.ID, "LoginLoginButton")
