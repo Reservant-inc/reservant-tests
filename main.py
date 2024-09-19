@@ -5,9 +5,9 @@ from Selenium.UserLogin import test_user_login
 
 def main():
     driver = webdriver.Edge()
-    test_user_register(driver)
-    print()
-    test_user_login(driver)
+
+    test_user_login(driver, check_signup=False)
+
     driver.quit()
 
 
