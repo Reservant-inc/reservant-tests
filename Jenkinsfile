@@ -24,7 +24,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh "docker stop frontend-tests && docker rm frontend-tests || true"
+                sh "(docker stop frontend-tests && docker rm frontend-tests) || true"
                 sh "docker run --rm -e DISCORD_WEBHOOK_URL=$DISCORD_WEBHOOK_URL -e $INFO_LABEL=${params.label_string} --name frontend-tests reservant-front-tests"
             }
         }
