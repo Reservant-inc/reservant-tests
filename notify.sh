@@ -23,7 +23,7 @@ if [ -f "$LOG_FILE" ]; then
     curl -H "Content-Type: application/json" \
       -X POST \
       -d '{
-        "content": "$MSG",
+        "content": "'"${MSG}"'",
         "embeds": [{
           "title": "Frontend Test Summary",
           "description": "'"${SUMMARY}"'",
