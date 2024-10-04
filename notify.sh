@@ -11,7 +11,7 @@ LOG_FILE="test_log.log"
 if [ -f "$LOG_FILE" ]; then
     echo "Log file $LOG_FILE created."
 
-    TESTS_COUNT=$(grep -c "[TEST" "$LOG_FILE")
+    TESTS_COUNT=$(grep -c "TEST " "$LOG_FILE")
     ERRORS_COUNT=$(grep -c "FAILED" "$LOG_FILE")
     PASSED_COUNT=$(grep -c "PASSED" "$LOG_FILE")
     
