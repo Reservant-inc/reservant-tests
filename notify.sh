@@ -18,7 +18,7 @@ if [ -f "$LOG_FILE" ]; then
     CURRENT_DATE=$(TZ=Etc/GMT-2 date +"%Y-%m-%d %H:%M:%S")
     ROLE_ID="1174437656688607353"
     MSG="<@&$ROLE_ID>\n## Frontend Tests performed on __ $CURRENT_DATE __"
-    SUMMARY="Tests completed: **$TESTS_COUNT**\nPassed: **$PASSED_COUNT**\nErrors: **$ERRORS_COUNT**"
+    SUMMARY="Tests completed: $TESTS_COUNT\nPassed: **$PASSED_COUNT**\nErrors: **$ERRORS_COUNT**"
 
     curl -H "Content-Type: application/json" \
       -X POST \
