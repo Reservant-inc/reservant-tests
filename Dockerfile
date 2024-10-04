@@ -1,15 +1,3 @@
-FROM selenium/standalone-chrome:latest
-
-WORKDIR /app
-COPY . /app
-
-# RUN apt-get update && apt-get install -y curl && apt-get clean
-RUN pip install --no-cache-dir -r requirements.txt
-
-# ENV DISCORD_WEBHOOK_URL=""
-
-
-
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
@@ -66,7 +54,6 @@ ENV CHROME_BIN="/usr/bin/google-chrome"
 ENV DISPLAY=:99
 
 # Make the bash script executable (to run tests and send results)
-COPY run_and_notify.sh /app/run_and_notify.sh
 RUN chmod +x /app/notify.sh
 
 # Run the bash script by default when the container starts
