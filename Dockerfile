@@ -6,51 +6,30 @@ WORKDIR /app
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
+    software-properties-common \
     unzip \
+    curl \
     xvfb \
-    gnupg2 \
-    libnss3 \
-    libgconf-2-4 \
-    libxi6 \
-    libgbm-dev \
-    libx11-xcb1 \
-    libxcomposite1 \
-    libxrandr2 \
-    libxcursor1 \
-    libxdamage1 \
-    libxfixes3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxss1 \
-    libasound2 \
-    fonts-liberation \
-    libappindicator3-1 \
-    xdg-utils \
-    && rm -rf /var/lib/apt/lists/*
+    wget \
+        bzip2 \
+        snapd
 
-# Install Chrome
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install ChromeDriver
-RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+') \
-    && CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION") \
-    && wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -P /tmp \
-    && unzip /tmp/chromedriver_linux64.zip -d /usr/local/bin/ \
-    && rm /tmp/chromedriver_linux64.zip \
-    && chmod +x /usr/local/bin/chromedriver
+# Chrome
+RUN apt-get update && \
+  apt-get install -y gnupg wget curl unzip --no-install-recommends && \
+  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+  echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
+  apt-get update -y && \
+  apt-get install -y google-chrome-stable && \
+  CHROMEVER=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*") && \
+  DRIVERVER=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROMEVER") && \
+  wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/$DRIVERVER/chromedriver_linux64.zip" && \
+  unzip /chromedriver/chromedriver* -d /chromedriver
 
 COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set environment variable to avoid chrome crashes (sandboxing issues)
-ENV CHROME_BIN="/usr/bin/google-chrome"
 ENV DISPLAY=:99
 
 # Make the bash script executable (to run tests and send results)
