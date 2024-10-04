@@ -23,4 +23,4 @@ ENV DISPLAY=:99
 RUN chmod +x /app/notify.sh
 
 # Run the bash script by default when the container starts
-CMD ["./run_and_notify.sh"]
+CMD ["/app/notify.sh"]
