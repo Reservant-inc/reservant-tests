@@ -11,6 +11,7 @@ pipeline {
 
     environment {
         DISCORD_WEBHOOK_URL = credentials('jenkins-front-tests-discord-webhook')
+        INFO_LABEL = "${params.label_string}"
     }
 
     stages {
