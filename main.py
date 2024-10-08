@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from Selenium.UserRegister import test_user_register
 from Selenium.UserLogin import test_user_login
+from Selenium.EmployeeRegister import test_register_employee
+
 
 
 def main():
@@ -13,6 +15,8 @@ def main():
     test_user_register(driver)
     print()
     test_user_login(driver)
+    print()
+    test_register_employee(driver)
     driver.quit()
 
 
