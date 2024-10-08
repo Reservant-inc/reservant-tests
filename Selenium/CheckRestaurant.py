@@ -24,16 +24,7 @@ def test_check_restaurant(driver):
 
         wait_for(delay)
 
-        #Nie wiadomo jak znaleźć panel
-
-        #element = driver.find_element(By.CLASS_NAME,
-        #                              "absolute top-[3.5rem] z-[1] h-[calc(100%-4rem)] w-[450px] overflow-y-hidden rounded-lg bg-white shadow-md left-[calc(1rem+300px)]")
-        #if(element.is_displayed()):
-           # info("Test zakończony powodzeniem. Element został poprawnie wyrenderowany.")
-
-       # driver.find_element(element.is_displayed(), "Element nie został poprawnie wyrenderowany.")
-
-
+        wait_for_element(driver, By.ID, "after-image-slider-controls")
 
     except Exception as e:
         result(str(e), False)
