@@ -24,7 +24,7 @@ def test_register_employee(driver):
         # Sprawdzenie czy istnieje elemenet o id root, w naszym przypadku div
         wait_for_element(driver, By.ID, "root")
 
-        #EMPLOYEE REGISTER
+        # EMPLOYEE REGISTER
         # Znalezienie i kliknięcie przycisku
         click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
 
@@ -32,8 +32,7 @@ def test_register_employee(driver):
         wait_for_url_to_be(driver, restaurants_management_url)
         click_button(driver, By.ID, "menu-listItem-employees-button")
 
-        # czekamy na załadowanie tabelki
-        # to do
+        # TODO: czekamy na załadowanie tabelki
 
         # przechodzimy do fromularza rejestracji pracownika
         # czy dla tego id nie powinna byc zmieniona nazwa?
@@ -41,22 +40,22 @@ def test_register_employee(driver):
 
         # Sprawdzenie czy pojawia się nowa zawartość
 
-        #firstname
+        # firstname
         click_text_field(driver, By.ID, "firstName")
 
         press_tab_key(driver)
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
-        #czy sa id dla error message bo narazie dla wszystkich widze: "errorMessage-wrap"
+        # TODO: czy sa id dla error message bo narazie dla wszystkich widze: "errorMessage-wrap"
 
-        #lastname
+        # lastname
         click_text_field(driver, By.ID, "lastName")
 
         press_tab_key(driver)
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
 
-        #login
+        # login
 
         click_text_field(driver, By.ID, "login")
 
@@ -64,15 +63,15 @@ def test_register_employee(driver):
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
 
-        #phone
-        #nie ma ID
+        # phone
+        # nie ma ID
         click_text_field(driver, By.NAME, "phoneNumber")
 
         press_tab_key(driver)
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
 
-        #password
+        # password
 
         click_text_field(driver, By.ID, "password")
 
@@ -80,7 +79,7 @@ def test_register_employee(driver):
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
 
-        #password_confirmation
+        # password_confirmation
         click_text_field(driver, By.ID, "confirmPassword")
 
         press_tab_key(driver)
@@ -90,7 +89,7 @@ def test_register_employee(driver):
 
         # Znaleznienie pola i wypełnienie go danymi
 
-        #selector value to ID?
+        # selector value to ID?
         enter_text(driver, By.ID, "firstName", sample_data.first_name)
 
         enter_text(driver, By.ID, "lastName", sample_data.last_name)
@@ -109,7 +108,7 @@ def test_register_employee(driver):
 
         click_button(driver, By.ID, "EmployeeRegisterSubmitButton")
 
-        # TODO sprawdzic czy test przeszedł
+        # TODO: sprawdzic czy test przeszedł
         return True  # Test przeszedł
 
     except Exception as e:
