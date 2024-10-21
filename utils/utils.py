@@ -85,6 +85,7 @@ def wait_for_element(driver, selector_type, selector_value, critical=True):
             raise TimeoutException(
                 f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds.") from e
 
+
 def enter_text(driver, selector_type, selector_value, text, critical=True):
     """
     Znajduje element na stronie i wpisuje do niego tekst.
@@ -212,7 +213,6 @@ def find_text_in_elements(driver, selector_type, selector_value, text, critical=
         if critical:
             raise NoSuchElementException(f"Couldn't find elements with {selector_type} '{selector_value}'") from e
         return False
-
 
 
 def check_page_title(driver, expected_title, critical=False):

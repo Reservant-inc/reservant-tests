@@ -11,7 +11,7 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
-def test_user_login(driver, check_signup = True):
+def test_user_login(driver, check_signup=True):
     info("USER LOGIN TEST")
     email = "Not selected yet"
     driver.get(login_url)
@@ -52,7 +52,7 @@ def test_user_login(driver, check_signup = True):
         wait_for_url_to_be(driver, home_url)
 
         # jeśli chcemy sprawdzić dodatkowo czy działa przycisk rejestracji przy logowaniu
-        if(check_signup):
+        if (check_signup):
             # Return to the login page and click "Sign In"
             click_button(driver, By.ID, "ToolsButton")
             click_button(driver, By.ID, "logoutDropdownItem")

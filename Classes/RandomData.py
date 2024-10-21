@@ -103,7 +103,6 @@ class RandomData:
     def generate_birth_date():
         return RandomData.fake.date_of_birth().strftime('%d.%m.%Y')
 
-
     # Metody generujące dane dla menu
     @staticmethod
     def generate_menu_type():

@@ -19,7 +19,7 @@ def test_user_register(driver):
         # Sprawdzenie czy istnieje elemenet o id root, w naszym przypadku div
         wait_for_element(driver, By.ID, "root")
 
-        #LOGIN
+        # LOGIN
         # Znalezienie i kliknięcie przycisku
         click_text_field(driver, By.ID, "login")
 
@@ -110,7 +110,7 @@ def test_user_register(driver):
         enter_text(driver, By.ID, "birthDate", RandomData.generate_birth_date())
 
         # Czekamy na pojawienie się przycisku
-        #TODO id
+        # TODO id
         universal_wait_for(driver, EC.element_to_be_clickable, By.CSS_SELECTOR, "button.pointer:nth-child(2)")
 
         click_button(driver, By.CSS_SELECTOR, "button.pointer:nth-child(2)")
