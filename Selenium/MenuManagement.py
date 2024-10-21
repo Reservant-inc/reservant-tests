@@ -3,7 +3,6 @@ from Selenium.RegisterRestaurant import sample_data
 from utils.utils import *
 from Selenium.UserLogin import test_user_login
 
-
 ip = get_variable_value("IP_FRONTEND")
 login_path = get_variable_value("LOGIN_USER")
 register_path = get_variable_value("REGISTER_USER")
@@ -13,8 +12,9 @@ register_url = f"http://{ip}{register_path}"
 home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
+
 def test_check_restaurant(driver):
-    test_user_login(driver,False)
+    test_user_login(driver, False)
     info("Test check restaurant")
     try:
         check_page_title(driver, "React App")
@@ -63,6 +63,7 @@ def test_check_restaurant(driver):
 
     finally:
         wait_for(delay)
+
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
