@@ -1,4 +1,6 @@
 import random
+import string
+
 from faker import Faker
 from datetime import datetime, timedelta
 
@@ -71,7 +73,31 @@ class RandomData:
 
     @staticmethod
     def generate_password():
-        return RandomData.fake.password()
+        length = 8  # Minimalna długość hasła
+
+        # Definicja znaków, które muszą się znaleźć w haśle
+        lower = string.ascii_lowercase
+        upper = string.ascii_uppercase
+        digits = string.digits
+        special_chars = "!@#$%^&*()"
+
+        # Losowanie po jednym znaku z każdego typu
+        password = [
+            random.choice(lower),
+            random.choice(upper),
+            random.choice(digits),
+            random.choice(special_chars)
+        ]
+
+        # Wypełnienie reszty hasła losowymi znakami (aby osiągnąć minimalną długość 8 znaków)
+        remaining_length = length - len(password)
+        password += random.choices(lower + upper + digits + special_chars, k=remaining_length)
+
+        # Tasowanie, aby znaki nie pojawiały się w przewidywalnym porządku
+        random.shuffle(password)
+
+        # Zwracanie jako string
+        return ''.join(password)
 
     @staticmethod
     def generate_birth_date():
