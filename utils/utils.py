@@ -66,25 +66,50 @@ def click_button(driver, selector_type, selector_value, critical=True):
             raise Exception(f"Couldn't click button with {selector_type} '{selector_value}'") from e
 
 
-def wait_for_element(driver, selector_type, selector_value, critical=True):
+def wait_for_element(driver, selector_type=None, selector_value=None, critical=True, element=None):
     """
     Czeka na obecność elementu na stronie w określonym czasie.
+    Można przekazać albo selektor (selector_type i selector_value), albo konkretny element (element).
     Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
     """
-
     try:
-        element = WebDriverWait(driver, timeout).until(
-            EC.presence_of_element_located((selector_type, selector_value))
-        )
-        result(f"Element with {selector_type} '{selector_value}' is present on the page.")
-        return element
+        if element is not None:
+            # Jeśli przekazano bezpośrednio element, czekamy aż będzie widoczny
+            element = WebDriverWait(driver, timeout).until(
+                EC.visibility_of(element)
+            )
+            result(f"Element is visible on the page.")
+            return element
+        elif selector_type is not None and selector_value is not None:
+            # Jeśli przekazano selektor, czekamy na obecność elementu o podanym selektorze
+            element = WebDriverWait(driver, timeout).until(
+                EC.presence_of_element_located((selector_type, selector_value))
+            )
+            result(f"Element with {selector_type} '{selector_value}' is present on the page.")
+            return element
+        else:
+            raise ValueError("You must provide either a selector (selector_type and selector_value) or an element.")
     except TimeoutException as e:
-        result(
-            f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds: {str(e)}",
-            False)
+        if element is not None:
+            result(f"Element is not visible on the page within {timeout} seconds: {str(e)}", False)
+            if critical:
+                raise TimeoutException(
+                    f"Element is not visible on the page within {timeout} seconds."
+                ) from e
+        else:
+            result(
+                f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds: {str(e)}",
+                False
+            )
+            if critical:
+                raise TimeoutException(
+                    f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds."
+                ) from e
+    except Exception as e:
+        result(f"Error while waiting for element: {str(e)}", False)
         if critical:
-            raise TimeoutException(
-                f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds.") from e
+            raise e
+
 
 
 def enter_text(driver, selector_type, selector_value, text, critical=True):
