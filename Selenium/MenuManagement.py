@@ -1,4 +1,3 @@
-from Classes.RestaurantRegistrationData import RestaurantRegistrationData
 from Selenium.RegisterRestaurant import sample_data
 from utils.utils import *
 from Selenium.UserLogin import test_user_login
