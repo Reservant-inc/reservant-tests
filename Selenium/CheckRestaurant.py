@@ -19,11 +19,13 @@ def test_check_restaurant(driver):
 
         wait_for_element(driver, By.ID, "root")
 
-        click_button(driver, By.ID, "homePage-listItemButton")
+        elements = get_elements_list(driver, By.CSS_SELECTOR, '[id="homePage-listItemButton"]')
 
-        wait_for(delay)
-
-        wait_for_element(driver, By.ID, "after-image-slider-controls")
+        for element in elements:
+            wait_for_element(driver, element=element)
+            element.click()
+            wait_for_element(driver, By.ID, "after-image-slider-controls")
+            wait_for(delay)
 
     except Exception as e:
         result(str(e), False)
