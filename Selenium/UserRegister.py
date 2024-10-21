@@ -1,4 +1,4 @@
-from Classes.LoginData import LoginData
+from Classes.RandomData import RandomData
 from utils.utils import *
 
 ip = get_variable_value("IP_FRONTEND")
@@ -7,7 +7,6 @@ login_path = get_variable_value("LOGIN_USER")
 delay = int(get_variable_value("DELAY"))
 register_url = f"http://{ip}{register_path}"
 login_url = f"http://{ip}{login_path}"
-sample_login = LoginData.generate_login_data()
 
 
 def test_user_register(driver):
@@ -54,13 +53,15 @@ def test_user_register(driver):
 
         # Znaleznienie pola i wypełnienie go danymi
 
-        enter_text(driver, By.ID, "login", sample_login.login)
+        enter_text(driver, By.ID, "login", RandomData.generate_login())
 
-        enter_text(driver, By.ID, "email", sample_login.email)
+        enter_text(driver, By.ID, "email", RandomData.generate_email())
 
-        enter_text(driver, By.ID, "password", sample_login.password)
+        password = RandomData.generate_password()
 
-        enter_text(driver, By.ID, "confirmPassword", sample_login.password)
+        enter_text(driver, By.ID, "password", password)
+
+        enter_text(driver, By.ID, "confirmPassword", password)
         result("Form filled correctly")
 
         wait_for(delay)
@@ -100,13 +101,13 @@ def test_user_register(driver):
 
         wait_for_element(driver, By.ID, "userRegister-phoneNumber-field")
 
-        enter_text(driver, By.ID, "firstName", sample_login.first_name)
+        enter_text(driver, By.ID, "firstName", RandomData.generate_first_name())
 
-        enter_text(driver, By.ID, "lastName", sample_login.last_name)
+        enter_text(driver, By.ID, "lastName", RandomData.generate_last_name())
 
-        enter_text(driver, By.ID, "userRegister-phoneNumber-field", sample_login.phone_number)
+        enter_text(driver, By.ID, "userRegister-phoneNumber-field", RandomData.generate_phone())
 
-        enter_text(driver, By.ID, "birthDate", sample_login.birth_day)
+        enter_text(driver, By.ID, "birthDate", RandomData.generate_birth_date())
 
         # Czekamy na pojawienie się przycisku
         #TODO id
@@ -127,9 +128,6 @@ def test_user_register(driver):
         info("User register test failed")
         info(f"Current URL: {driver.current_url}")
         info(f"Page title: {driver.title}")
-        print("-----------------------")
-        info("Problem with following login data:")
-        info(sample_login)
         return False  # Test nieudany
 
 

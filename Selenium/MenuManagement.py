@@ -1,4 +1,4 @@
-from Selenium.RegisterRestaurant import sample_data
+from Classes.RandomData import RandomData
 from utils.utils import *
 from Selenium.UserLogin import test_user_login
 
@@ -12,10 +12,11 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
-def test_check_restaurant(driver):
+def test_menu_management(driver):
     test_user_login(driver, False)
     info("Test check restaurant")
     try:
+        # TWORZENIE MENU
         check_page_title(driver, "React App")
 
         wait_for_element(driver, By.ID, "root")
@@ -31,27 +32,33 @@ def test_check_restaurant(driver):
 
         click_button(driver, By.ID, "addmenuSubmit")
 
+        name = RandomData.generate_name()
         click_text_field(driver, By.ID, "name")
-        enter_text(driver, By.ID, "name", sample_data.business_type)
+        enter_text(driver, By.ID, "name", name)
 
         click_text_field(driver, By.ID, "alternateName")
-        enter_text(driver, By.ID, "alternateName", sample_data.city)
+        enter_text(driver, By.ID, "alternateName", RandomData.generate_name())
 
         click_button(driver, By.ID, "menuType")
-        click_button(driver, By.CSS_SELECTOR, '[value="Alcohol"]')
+        click_button(driver, By.CSS_SELECTOR, f'[value="{RandomData.generate_menu_type()}"]')
 
         click_text_field(driver, By.ID, "dateFrom")
-        enter_text(driver, By.ID, "dateFrom", "12122000")
+        enter_text(driver, By.ID, "dateFrom", RandomData.generate_menu_date_from())
 
         click_text_field(driver, By.ID, "dateUntil")
-        enter_text(driver, By.ID, "dateUntil", "11112011")
+        enter_text(driver, By.ID, "dateUntil", RandomData.generate_menu_date_until())
 
         wait_for(delay)
-
-        universal_wait_for(driver, EC.element_to_be_clickable, By.ID, "addmenuSubmit")
         click_button(driver, By.ID, "addmenuSubmit")
         wait_for(delay)
-        wait_for(delay)
+
+        # MODYFIKOWANIE MENU
+
+        element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
+
+        elements = element.find_elements(By.CSS_SELECTOR, "button")
+        elements[0].click()
+
 
     except Exception as e:
         result(str(e), False)
@@ -66,5 +73,5 @@ def test_check_restaurant(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
-    test_check_restaurant(driver)
+    test_menu_management(driver)
     driver.quit()

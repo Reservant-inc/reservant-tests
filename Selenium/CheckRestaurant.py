@@ -22,7 +22,6 @@ def test_check_restaurant(driver):
         elements = get_elements_list(driver, By.CSS_SELECTOR, '[id="homePage-listItemButton"]')
 
         for element in elements:
-            wait_for_element(driver, element=element)
             element.click()
             wait_for_element(driver, By.ID, "after-image-slider-controls")
             wait_for(delay)

@@ -66,51 +66,24 @@ def click_button(driver, selector_type, selector_value, critical=True):
             raise Exception(f"Couldn't click button with {selector_type} '{selector_value}'") from e
 
 
-def wait_for_element(driver, selector_type=None, selector_value=None, critical=True, element=None):
+def wait_for_element(driver, selector_type, selector_value, critical=True):
     """
     Czeka na obecność elementu na stronie w określonym czasie.
-    Można przekazać albo selektor (selector_type i selector_value), albo konkretny element (element).
     Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
     """
     try:
-        if element is not None:
-            # Jeśli przekazano bezpośrednio element, czekamy aż będzie widoczny
-            element = WebDriverWait(driver, timeout).until(
-                EC.visibility_of(element)
-            )
-            result(f"Element is visible on the page.")
-            return element
-        elif selector_type is not None and selector_value is not None:
-            # Jeśli przekazano selektor, czekamy na obecność elementu o podanym selektorze
-            element = WebDriverWait(driver, timeout).until(
-                EC.presence_of_element_located((selector_type, selector_value))
-            )
-            result(f"Element with {selector_type} '{selector_value}' is present on the page.")
-            return element
-        else:
-            raise ValueError("You must provide either a selector (selector_type and selector_value) or an element.")
+        element = WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((selector_type, selector_value))
+        )
+        result(f"Element with {selector_type} '{selector_value}' is present on the page.")
+        return element
     except TimeoutException as e:
-        if element is not None:
-            result(f"Element is not visible on the page within {timeout} seconds: {str(e)}", False)
-            if critical:
-                raise TimeoutException(
-                    f"Element is not visible on the page within {timeout} seconds."
-                ) from e
-        else:
-            result(
-                f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds: {str(e)}",
-                False
-            )
-            if critical:
-                raise TimeoutException(
-                    f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds."
-                ) from e
-    except Exception as e:
-        result(f"Error while waiting for element: {str(e)}", False)
+        result(
+            f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds: {str(e)}",
+            False)
         if critical:
-            raise e
-
-
+            raise TimeoutException(
+                f"Element with {selector_type} '{selector_value}' is not present on the page within {timeout} seconds.") from e
 
 def enter_text(driver, selector_type, selector_value, text, critical=True):
     """
@@ -193,20 +166,23 @@ def press_tab_key(driver, critical=True):
             raise Exception("Failed to press TAB key.") from e
 
 
-def get_text_from_elements_by_class(driver, selector_type, selector_value, critical=True):
+def find_text_in_elements(driver, selector_type, selector_value, text, critical=False):
     """
-    Pobiera wartości tekstowe z elementów HTML o podanym selektorze.
+    Sprawdza, czy podany tekst znajduje się wśród wartości tekstowych elementów HTML o podanym selektorze.
 
     Args:
-    driver (webdriver): Instancja WebDriver używana do kontroli przeglądarki.
-    selector_type (By): Typ selektora (np. By.CLASS_NAME, By.CSS_SELECTOR).
-    selector_value (str): Wartość selektora, używana do znalezienia elementów.
+        driver (webdriver): Instancja WebDriver używana do kontroli przeglądarki.
+        selector_type (By): Typ selektora (np. By.CLASS_NAME, By.CSS_SELECTOR).
+        selector_value (str): Wartość selektora, używana do znalezienia elementów.
+        text (str): Tekst, którego szukamy w elementach.
+        critical (bool): Czy wyjątek powinien zostać rzucony w przypadku niepowodzenia.
 
     Returns:
-    List[str]: Lista zawierająca wartości tekstowe z elementów znalezionych przy użyciu selektora.
+        WebElement: Element, w którym znaleziono tekst, lub False, jeśli tekst nie został znaleziony.
 
     Raises:
-    NoSuchElementException: Jeśli elementy nie zostaną znalezione (jeśli critical=True).
+        NoSuchElementException: Jeśli elementy nie zostaną znalezione (jeśli critical=True).
+        Exception: Jeśli tekst nie zostanie znaleziony (jeśli critical=True).
     """
     try:
         # Oczekiwanie na element
@@ -219,15 +195,24 @@ def get_text_from_elements_by_class(driver, selector_type, selector_value, criti
         if not elements:
             raise NoSuchElementException(f"No elements found with {selector_type} '{selector_value}'")
 
-        # Pobieranie tekstów z każdego elementu
-        texts = [element.text for element in elements]
-        result(f"Successfully retrieved text from elements with {selector_type} '{selector_value}'")
-        return texts
+        # Przeszukiwanie tekstów w każdym elemencie
+        for element in elements:
+            if text in element.text:
+                result(f"Text '{text}' found in element with {selector_type} '{selector_value}'")
+                return element
+
+        # Jeśli tekst nie zostanie znaleziony
+        result(f"Text '{text}' not found in elements with {selector_type} '{selector_value}'", False)
+        if critical:
+            raise Exception(f"Text '{text}' not found in elements with {selector_type} '{selector_value}'")
+        return False
 
     except NoSuchElementException as e:
         result(f"Couldn't find elements with {selector_type} '{selector_value}': {str(e)}", False)
         if critical:
             raise NoSuchElementException(f"Couldn't find elements with {selector_type} '{selector_value}'") from e
+        return False
+
 
 
 def check_page_title(driver, expected_title, critical=False):

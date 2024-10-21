@@ -3,7 +3,9 @@ from selenium.webdriver.chrome.options import Options
 from Selenium.UserRegister import test_user_register
 from Selenium.UserLogin import test_user_login
 from Selenium.EmployeeRegister import test_register_employee
-
+from Selenium.RegisterRestaurant import test_register_restaurant
+from Selenium.MenuManagement import test_menu_management
+from Selenium.CheckRestaurant import test_check_restaurant
 
 
 def main():
@@ -17,6 +19,12 @@ def main():
     test_user_login(driver)
     print()
     test_register_employee(driver)
+    print()
+    test_register_restaurant(driver)
+    print()
+    test_menu_management(driver)
+    print()
+    test_check_restaurant(driver)
     driver.quit()
 
 

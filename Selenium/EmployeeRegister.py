@@ -1,4 +1,4 @@
-from Classes.EmployeeRegistrationData import EmployeeRegistrationData
+from Classes.RandomData import RandomData
 from utils.utils import *
 from Selenium.UserLogin import test_user_login
 
@@ -11,7 +11,7 @@ home_url = f"http://{ip}{home_path}"
 # employee_management_url = f"http://{ip}{employee_management_path}"
 restaurants_management_path = get_variable_value("RESTAURANTS_MANAGEMENT")
 restaurants_management_url = f"http://{ip}{restaurants_management_path}"
-sample_data = EmployeeRegistrationData.generate_employee_data()
+
 
 def test_register_employee(driver):
     test_user_login(driver, False)
@@ -86,21 +86,22 @@ def test_register_employee(driver):
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
 
-
         # Znaleznienie pola i wypełnienie go danymi
 
         # selector value to ID?
-        enter_text(driver, By.ID, "firstName", sample_data.first_name)
+        enter_text(driver, By.ID, "firstName", RandomData.generate_first_name())
 
-        enter_text(driver, By.ID, "lastName", sample_data.last_name)
+        enter_text(driver, By.ID, "lastName", RandomData.generate_last_name())
 
-        enter_text(driver, By.ID, "login", sample_data.login)
+        enter_text(driver, By.ID, "login", RandomData.generate_login())
 
-        enter_text(driver, By.NAME, "phoneNumber", sample_data.phone)
+        enter_text(driver, By.NAME, "phoneNumber", RandomData.generate_phone())
 
-        enter_text(driver, By.ID, "password", sample_data.password)
+        password = RandomData.generate_password()
 
-        enter_text(driver, By.ID, "confirmPassword", sample_data.password_confirmation)
+        enter_text(driver, By.ID, "password", password)
+
+        enter_text(driver, By.ID, "confirmPassword", password)
 
         wait_for(delay)
 
@@ -116,9 +117,6 @@ def test_register_employee(driver):
         info("Register restaurant test failed")
         info(f"Current URL: {driver.current_url}")
         info(f"Page title: {driver.title}")
-        print("-----------------------")
-        info("Problem with following login data:")
-        info(sample_data)
         return False  # Test nieudany
 
     finally:

@@ -1,4 +1,4 @@
-from Classes.RestaurantRegistrationData import RestaurantRegistrationData
+from Classes.RandomData import RandomData
 from utils.utils import *
 from Selenium.UserLogin import test_user_login
 
@@ -8,7 +8,6 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 restaurants_management_path = get_variable_value("RESTAURANTS_MANAGEMENT")
 restaurants_management_url = f"http://{ip}{restaurants_management_path}"
-sample_data = RestaurantRegistrationData.generate_restaurant_data()
 
 
 def test_register_restaurant(driver):
@@ -83,17 +82,17 @@ def test_register_restaurant(driver):
 
         # Znaleznienie pola i wypełnienie go danymi
 
-        enter_text(driver, By.ID, "name", sample_data.name)
+        enter_text(driver, By.ID, "name", RandomData.generate_name())
 
-        enter_text(driver, By.ID, "address", sample_data.address)
+        enter_text(driver, By.ID, "address", RandomData.generate_address())
 
-        enter_text(driver, By.ID, "postalIndex", sample_data.postal_code)
+        enter_text(driver, By.ID, "postalIndex", RandomData.generate_postal_code())
 
-        enter_text(driver, By.ID, "city", sample_data.city)
+        enter_text(driver, By.ID, "city", RandomData.generate_city())
 
-        enter_text(driver, By.ID, "nip", sample_data.nip)
+        enter_text(driver, By.ID, "nip", RandomData.generate_nip())
 
-        select_option_by_visible_text(driver, By.ID, "restaurantType", sample_data.business_type)
+        select_option_by_visible_text(driver, By.ID, "restaurantType", RandomData.generate_business_type())
 
         upload_file(driver, By.ID, "idCard", "../Files/test.pdf")
 
@@ -117,7 +116,7 @@ def test_register_restaurant(driver):
 
         upload_file(driver, By.ID, "photos", "../Files/test.png")
 
-        enter_text(driver, By.ID, "description", sample_data.description)
+        enter_text(driver, By.ID, "description", RandomData.generate_description())
 
         click_button(driver, By.ID, "RestaurantRegisterNextButton")
 
@@ -130,9 +129,6 @@ def test_register_restaurant(driver):
         info("Register restaurant test failed")
         info(f"Current URL: {driver.current_url}")
         info(f"Page title: {driver.title}")
-        print("-----------------------")
-        info("Problem with following login data:")
-        info(sample_data)
         return False  # Test nieudany
 
 
