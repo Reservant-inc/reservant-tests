@@ -400,5 +400,29 @@ def check_checkbox(driver, selector_type, selector_value, critical=True):
             raise Exception(f"Couldn't find checkbox with {selector_type} '{selector_value}'") from e
 
 
+def get_elements_list(driver, selector_type, selector_value, critical=True):
+    """
+    Znajduje i zwraca listę elementów pasujących do podanego selektora.
+    Jeśli critical=True, rzuca wyjątek przy niepowodzeniu. Jeśli False, tylko loguje błąd.
+    """
+    try:
+        # Oczekiwanie na obecność przynajmniej jednego elementu
+        wait_for_element(driver, selector_type, selector_value, critical)
+
+        # Znajdowanie wszystkich elementów pasujących do selektora
+        elements = driver.find_elements(selector_type, selector_value)
+
+        # Sprawdzenie, czy znaleziono jakieś elementy
+        if not elements:
+            raise NoSuchElementException(f"Nie znaleziono elementów z {selector_type} '{selector_value}'")
+
+        result(f"Znaleziono {len(elements)} elementów z {selector_type} '{selector_value}'")
+        return elements
+    except Exception as e:
+        result(f"Nie udało się znaleźć elementów z {selector_type} '{selector_value}': {str(e)}", False)
+        if critical:
+            raise Exception(f"Nie udało się znaleźć elementów z {selector_type} '{selector_value}'") from e
+
+
 if __name__ == "__main__":
     print()
