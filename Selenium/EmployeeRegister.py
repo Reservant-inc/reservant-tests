@@ -32,7 +32,12 @@ def test_register_employee(driver):
         wait_for_url_to_be(driver, restaurants_management_url)
         click_button(driver, By.ID, "menu-listItem-employees-button")
 
-        # TODO: czekamy na załadowanie tabelki
+        # czekamy na załadowanie tabelki
+        wait_for_element(driver, By.CSS_SELECTOR,
+                         "div.MuiDataGrid-row.MuiDataGrid-row--editable.MuiDataGrid-row--firstVisible", False)
+
+        # sprawdzamy czy id restauracji są unikalne(nie ma powtórzeń)
+        verify_unique_column_values(driver, 'div[data-field="login"]', False)
 
         # przechodzimy do fromularza rejestracji pracownika
         # czy dla tego id nie powinna byc zmieniona nazwa?
