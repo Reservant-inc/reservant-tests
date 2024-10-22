@@ -130,7 +130,6 @@ def test_register_restaurant(driver):
         info(f"Page title: {driver.title}")
         return False  # Test nieudany
 
-
     finally:
         wait_for(delay)
 
