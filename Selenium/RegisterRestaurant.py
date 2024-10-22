@@ -31,10 +31,8 @@ def test_register_restaurant(driver):
         click_button(driver, By.ID, "menu-listItem-restaurants-button")
 
         # czekamy na załadowanie tabelki
-        # TODO zmienic z XPath na coś innego
-        wait_for_element(driver, By.XPATH,
-                         "/html/body/div/div/div/div/div[2]/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[2]",
-                         False)
+        wait_for_element(driver, By.CSS_SELECTOR,
+                         "div.MuiDataGrid-row.MuiDataGrid-row--editable.MuiDataGrid-row--firstVisible", False)
 
         # sprawdzamy czy id restauracji są unikalne(nie ma powtórzeń)
         verify_unique_column_values(driver, 'div[data-field="restaurantId"]', False)
