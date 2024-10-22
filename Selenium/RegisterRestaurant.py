@@ -11,10 +11,11 @@ restaurants_management_url = f"http://{ip}{restaurants_management_path}"
 
 
 def test_register_restaurant(driver):
-    test_user_login(driver, False)
-
     info("USER REGISTER TEST")
     try:
+        driver.get(home_url)
+        wait_for_url_to_be(driver, home_url)
+
         # Sprawdzenie tytułu
         check_page_title(driver, "React App")
 
@@ -136,5 +137,6 @@ def test_register_restaurant(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    test_user_login(driver, False)
     test_register_restaurant(driver)
     driver.quit()

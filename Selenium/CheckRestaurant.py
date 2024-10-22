@@ -12,9 +12,11 @@ home_url = f"http://{ip}{home_path}"
 
 
 def test_check_restaurant(driver):
-    test_user_login(driver, False)
     info("TEST CHECK RESTAURANTS")
     try:
+        driver.get(home_url)
+        wait_for_url_to_be(driver, home_url)
+
         check_page_title(driver, "React App")
 
         wait_for_element(driver, By.ID, "root")
@@ -39,5 +41,6 @@ def test_check_restaurant(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    test_user_login(driver, False)
     test_check_restaurant(driver)
     driver.quit()

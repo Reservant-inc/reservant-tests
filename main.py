@@ -19,13 +19,15 @@ def main():
     print()
     test_user_login(driver)
     print()
-    test_register_employee(driver)
+    test_user_login(driver, False)
+    print()
+    test_check_restaurant(driver)
     print()
     test_register_restaurant(driver)
     print()
-    test_menu_management(driver)
+    test_register_employee(driver)
     print()
-    test_check_restaurant(driver)
+    test_menu_management(driver)
     driver.quit()
 
 
