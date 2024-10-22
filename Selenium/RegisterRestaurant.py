@@ -11,7 +11,7 @@ restaurants_management_url = f"http://{ip}{restaurants_management_path}"
 
 
 def test_register_restaurant(driver):
-    info("USER REGISTER TEST")
+    info("RESTAURANT REGISTER TEST")
     try:
         driver.get(home_url)
         wait_for_url_to_be(driver, home_url)
