@@ -120,7 +120,7 @@ def test_register_employee(driver):
 
     except Exception as e:
         result(str(e), False)
-        info("Register restaurant test failed")
+        info("Employee management test failed")
         info(f"Current URL: {driver.current_url}")
         info(f"Page title: {driver.title}")
         return False  # Test nieudany

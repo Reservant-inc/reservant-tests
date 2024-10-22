@@ -23,7 +23,7 @@ def main():
     print()
     test_check_restaurant(driver)
     print()
-    test_register_restaurant(driver)
+    test_register_restaurant(driver, True)
     print()
     test_register_employee(driver)
     print()

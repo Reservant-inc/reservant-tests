@@ -10,7 +10,7 @@ restaurants_management_path = get_variable_value("RESTAURANTS_MANAGEMENT")
 restaurants_management_url = f"http://{ip}{restaurants_management_path}"
 
 
-def test_register_restaurant(driver):
+def test_register_restaurant(driver, diff_path=False):
     info("RESTAURANT REGISTER TEST")
     try:
         driver.get(home_url)
@@ -93,13 +93,20 @@ def test_register_restaurant(driver):
 
         select_option_by_visible_text(driver, By.ID, "restaurantType", RandomData.generate_business_type())
 
-        upload_file(driver, By.ID, "idCard", "../Files/test.pdf")
+        if(diff_path):
+            pdf = "Files/test.pdf"
+            png = "Files/test.png"
+        else:
+            pdf = "../Files/test.pdf"
+            png = "../Files/test.png"
 
-        upload_file(driver, By.ID, "businessPermission", "../Files/test.pdf")
+        upload_file(driver, By.ID, "idCard", pdf)
 
-        upload_file(driver, By.ID, "rentalContract", "../Files/test.pdf")
+        upload_file(driver, By.ID, "businessPermission", pdf)
 
-        upload_file(driver, By.ID, "alcoholLicense", "../Files/test.pdf")
+        upload_file(driver, By.ID, "rentalContract", pdf)
+
+        upload_file(driver, By.ID, "alcoholLicense", pdf)
 
         wait_for(delay)
 
@@ -111,9 +118,9 @@ def test_register_restaurant(driver):
 
         check_checkbox(driver, selector_type=By.ID, selector_value='provideDelivery')
 
-        upload_file(driver, By.ID, "logo", "../Files/test.png")
+        upload_file(driver, By.ID, "logo", png)
 
-        upload_file(driver, By.ID, "photos", "../Files/test.png")
+        upload_file(driver, By.ID, "photos", png)
 
         enter_text(driver, By.ID, "description", RandomData.generate_description())
 
