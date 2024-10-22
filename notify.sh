@@ -13,12 +13,11 @@ if [ -f "$LOG_FILE" ]; then
 
     ERRORS_COUNT=$(grep -c "FAILED" "$LOG_FILE")
     PASSED_COUNT=$(grep -c "PASSED" "$LOG_FILE")
-    TESTS_COUNT= $((ERRORS_COUNT + PASSED_COUNT))
 
     CURRENT_DATE=$(TZ=Etc/GMT-2 date +"%Y-%m-%d %H:%M:%S")
     ROLE_ID="1174437656688607353"
     MSG="<@&$ROLE_ID>\n## Frontend Tests performed on __ $CURRENT_DATE __ ($INFO_LABEL)"
-    SUMMARY="Tests completed: $TESTS_COUNT\nPassed: **$PASSED_COUNT**\nErrors: **$ERRORS_COUNT**"
+    SUMMARY="Passed: **$PASSED_COUNT**\nErrors: **$ERRORS_COUNT**"
 
     curl -H "Content-Type: application/json" \
       -X POST \
