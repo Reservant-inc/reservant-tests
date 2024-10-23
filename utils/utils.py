@@ -98,12 +98,12 @@ def enter_text(driver, selector_type, selector_value, text, critical=True):
         input_field = driver.find_element(selector_type, selector_value)
         input_field.send_keys(text)
         input_field.send_keys(Keys.TAB)
-        result(f"Successfully entered text into element with {selector_type} '{selector_value}'")
+        result(f"Successfully entered text: \"{text}\" into element with {selector_type} '{selector_value}'")
     except NoSuchElementException as e:
-        result(f"Couldn't find element with {selector_type} '{selector_value}' to enter text: {str(e)}", False)
+        result(f"Couldn't find element with {selector_type} '{selector_value}' to enter text: \"{text}\" {str(e)}", False)
         if critical:
             raise NoSuchElementException(
-                f"Couldn't find element with {selector_type} '{selector_value}' to enter text.") from e
+                f"Couldn't find element with {selector_type} '{selector_value}' to enter text: \"{text}\".") from e
 
 
 def universal_wait_for(driver, condition_type, selector_type=None, selector_value=None, different_value=None,
