@@ -62,6 +62,19 @@ def test_menu_management(driver):
 
         element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
 
+        scrollable_element = driver.find_element(By.CSS_SELECTOR,
+                                                 'div.overflow-y-auto.scroll.h-full.flex.flex-col.gap-5.scroll-smooth')  # Use the correct selector here
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        scrollable_element.send_keys(Keys.PAGE_DOWN)
+
         elements = element.find_elements(By.CSS_SELECTOR, "button")
         elements[0].click()
 
