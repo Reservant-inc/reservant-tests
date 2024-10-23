@@ -29,7 +29,7 @@ def test_menu_management(driver):
         find_text_in_elements(driver, By.ID, "menu-listItem-restaurants-button", "Restaurants").click()
         wait_for(delay)
 
-        click_button(driver, By.ID, "RestaurantSeeDetailsButton0John Doe's")
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="ArrowForwardIosIcon"]')
         wait_for(delay)
 
         click_button(driver, By.ID, "menu-listItem-restaurant-menu-button")
