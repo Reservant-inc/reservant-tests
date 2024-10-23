@@ -26,11 +26,15 @@ def test_menu_management(driver):
         click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
         wait_for(delay)
 
-        click_button(driver, By.ID, "menu-listItem-menuManagement")
+        find_text_in_elements(driver, By.ID, "menu-listItem-restaurants-button", "Restaurants").click()
         wait_for(delay)
 
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]')
+        click_button(driver, By.ID, "RestaurantSeeDetailsButton0John Doe's")
         wait_for(delay)
+
+        click_button(driver, By.ID, "menu-listItem-restaurant-menu-button")
+
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]')
 
         click_button(driver, By.ID, "addmenuSubmit")
 

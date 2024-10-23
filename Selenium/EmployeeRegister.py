@@ -31,7 +31,7 @@ def test_register_employee(driver):
 
         # Czekamy na zmianę strony
         wait_for_url_to_be(driver, restaurants_management_url)
-        click_button(driver, By.ID, "menu-listItem-employees-button")
+        click_button(driver, By.ID, "menu-listItem-employees-all--button")
 
         # czekamy na załadowanie tabelki
         wait_for_element(driver, By.CSS_SELECTOR,
