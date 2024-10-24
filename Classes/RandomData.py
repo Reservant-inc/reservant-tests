@@ -10,8 +10,8 @@ class RandomData:
 
     # Metody generujące dane dla restauracji
     @staticmethod
-    def generate_name():
-        return RandomData.fake.name()
+    def generate_word():
+        return RandomData.fake.word()
 
     @staticmethod
     def generate_address():

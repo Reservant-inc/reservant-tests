@@ -38,12 +38,12 @@ def test_menu_management(driver):
 
         click_button(driver, By.ID, "addmenuSubmit")
 
-        name = RandomData.generate_name()
+        name = RandomData.generate_word()
         click_text_field(driver, By.ID, "name")
         enter_text(driver, By.ID, "name", name)
 
         click_text_field(driver, By.ID, "alternateName")
-        enter_text(driver, By.ID, "alternateName", RandomData.generate_name())
+        enter_text(driver, By.ID, "alternateName", RandomData.generate_word())
 
         click_button(driver, By.ID, "menuType")
         click_button(driver, By.CSS_SELECTOR, f'[value="{RandomData.generate_menu_type()}"]')
