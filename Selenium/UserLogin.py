@@ -7,8 +7,8 @@ register_path = get_variable_value("REGISTER_USER")
 delay = int(get_variable_value("DELAY"))
 login_url = f"http://{ip}{login_path}"
 register_url = f"http://{ip}{register_path}"
-login_path = get_variable_value("LOGIN_PATH")
-login_url = f"http://{ip}{login_path}"
+home_path = get_variable_value("RESERVANT_PATH")
+home_url = f"http://{ip}{home_path}"
 
 
 def test_user_login(driver, check_signup=True):
@@ -49,7 +49,7 @@ def test_user_login(driver, check_signup=True):
         click_button(driver, By.ID, "LoginLoginButton")
 
         # Zmiana strony
-        wait_for_url_to_be(driver, login_url)
+        wait_for_url_to_be(driver, home_url)
 
         # jeśli chcemy sprawdzić dodatkowo czy działa przycisk rejestracji przy logowaniu
         if (check_signup):
