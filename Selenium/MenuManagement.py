@@ -26,13 +26,13 @@ def test_menu_management(driver):
         click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
         wait_for(delay)
 
-        find_text_in_elements(driver, By.ID, "menu-listItem-restaurants-button", "Restaurants").click()
+        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Restaurants").click()
         wait_for(delay)
 
         click_button(driver, By.CSS_SELECTOR, '[data-testid="ArrowForwardIosIcon"]')
         wait_for(delay)
 
-        click_button(driver, By.ID, "menu-listItem-restaurant-menu-button")
+        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Menu management").click()
 
         click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]')
 
@@ -59,21 +59,20 @@ def test_menu_management(driver):
         wait_for(delay)
 
         # MODYFIKOWANIE MENU
-
         element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
-
-        scrollable_element = driver.find_element(By.CSS_SELECTOR,
-                                                 'div.overflow-y-auto.scroll.h-full.flex.flex-col.gap-5.scroll-smooth')  # Use the correct selector here
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
-        scrollable_element.send_keys(Keys.PAGE_DOWN)
+        
+        # scrollable_element = driver.find_element(By.CSS_SELECTOR,
+        #                                          'div.overflow-y-auto.scroll.h-full.flex.flex-col.gap-5.scroll-smooth')
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
+        # scrollable_element.send_keys(Keys.PAGE_DOWN)
 
         elements = element.find_elements(By.CSS_SELECTOR, "button")
         elements[0].click()
