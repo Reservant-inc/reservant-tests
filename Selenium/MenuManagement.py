@@ -54,13 +54,31 @@ def test_menu_management(driver):
         click_text_field(driver, By.ID, "dateUntil")
         enter_text(driver, By.ID, "dateUntil", RandomData.generate_menu_date_until())
 
+        # wait_for(delay)
+        # click_button(driver, By.ID, "addmenuSubmit")
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
         wait_for(delay)
-        click_button(driver, By.ID, "addmenuSubmit")
+        driver.refresh()
+
+        # element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="EditIcon"]');
+        wait_for(delay)
+        click_text_field(driver, By.ID, "name")
+        enter_text(driver, By.ID, "name", "2")
+        click_text_field(driver, By.ID, "alternateName")
+        enter_text(driver, By.ID, "alternateName", RandomData.generate_word())
+        click_button(driver, By.ID, "menuType")
+        click_button(driver, By.CSS_SELECTOR, f'[value="{RandomData.generate_menu_type()}"]')
+        click_text_field(driver, By.ID, "dateFrom")
+        enter_text(driver, By.ID, "dateFrom", RandomData.generate_menu_date_from())
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
         wait_for(delay)
 
-        # MODYFIKOWANIE MENU
-        element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
-        
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="DeleteIcon"]');
+        wait_for(delay)
+        cancel_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Cancel')]")
+        cancel_button.click()
         # scrollable_element = driver.find_element(By.CSS_SELECTOR,
         #                                          'div.overflow-y-auto.scroll.h-full.flex.flex-col.gap-5.scroll-smooth')
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
@@ -73,9 +91,9 @@ def test_menu_management(driver):
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
-
-        elements = element.find_elements(By.CSS_SELECTOR, "button")
-        elements[0].click()
+        # element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
+        # elements = element.find_elements(By.CSS_SELECTOR, "button")
+        # elements[0].click()
 
 
     except Exception as e:
