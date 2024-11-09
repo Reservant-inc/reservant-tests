@@ -48,10 +48,8 @@ def test_menu_management(driver, diff_path = False):
         click_button(driver, By.ID, "menuType")
         click_button(driver, By.CSS_SELECTOR, f'[value="{RandomData.generate_menu_type()}"]')
 
-        click_text_field(driver, By.ID, "dateFrom")
         enter_text(driver, By.ID, "dateFrom", RandomData.generate_menu_date_from())
 
-        click_text_field(driver, By.ID, "dateUntil")
         enter_text(driver, By.ID, "dateUntil", RandomData.generate_menu_date_until())
 
         wait_for(delay)
@@ -72,7 +70,6 @@ def test_menu_management(driver, diff_path = False):
         enter_text(driver, By.ID, "alternateName", RandomData.generate_word())
         click_button(driver, By.ID, "menuType")
         click_button(driver, By.CSS_SELECTOR, f'[value="{RandomData.generate_menu_type()}"]')
-        click_text_field(driver, By.ID, "dateFrom")
         enter_text(driver, By.ID, "dateFrom", RandomData.generate_menu_date_from())
         wait_for(delay)
         click_button(driver, By.ID, "addmenuSubmit")
@@ -116,8 +113,10 @@ def test_menu_management(driver, diff_path = False):
         actions = ActionChains(driver)
         actions.move_to_element(element).perform()
         elements2 = element.find_elements(By.CSS_SELECTOR, "button")
+        print(elements2)
         elements2[0].click()
-        click_text_field(driver, By.ID, "name", name+"3")
+        click_text_field(driver, By.ID, "name")
+        enter_text(driver, By.ID, "name", name+"3")
         click_button(driver, By.ID, "addmenuitemsubmit")
         # elements2[1].click()
         # button = driver.find_element(By.XPATH, "//button[text()='Yes']")

@@ -140,7 +140,7 @@ def test_register_employee(driver):
         find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="firstName"]', first_name)
         find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="lastName"]', last_name)
 
-        #TODO sprawdzić usuwanie - na razie nie działa
+        #TODO sprawdzić usuwanie i edytowanie - na razie nie działa
         return True  # Test przeszedł
 
     except Exception as e:
