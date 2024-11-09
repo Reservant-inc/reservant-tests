@@ -12,7 +12,7 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
-def test_menu_management(driver):
+def test_menu_management(driver, diff_path = False):
     info("TEST MENU MANAGEMENT")
     try:
         driver.get(home_url)
@@ -57,10 +57,82 @@ def test_menu_management(driver):
         wait_for(delay)
         click_button(driver, By.ID, "addmenuSubmit")
         wait_for(delay)
+        driver.refresh()
 
-        # MODYFIKOWANIE MENU
         element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
-        
+        elements = element.find_elements(By.CSS_SELECTOR, "button")
+        elements[1].click()
+
+        # element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name)
+        # click_button(driver, By.CSS_SELECTOR, '[data-testid="EditIcon"]');
+        wait_for(delay)
+        click_text_field(driver, By.ID, "name")
+        enter_text(driver, By.ID, "name", "2")
+        click_text_field(driver, By.ID, "alternateName")
+        enter_text(driver, By.ID, "alternateName", RandomData.generate_word())
+        click_button(driver, By.ID, "menuType")
+        click_button(driver, By.CSS_SELECTOR, f'[value="{RandomData.generate_menu_type()}"]')
+        click_text_field(driver, By.ID, "dateFrom")
+        enter_text(driver, By.ID, "dateFrom", RandomData.generate_menu_date_from())
+        wait_for(delay)
+        click_button(driver, By.ID, "addmenuSubmit")
+        wait_for(delay)
+
+        element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name+"2")
+        elements = element.find_elements(By.CSS_SELECTOR, "button")
+        elements[0].click()
+
+
+        if (diff_path):
+            png = "Files/test.png"
+        else:
+            png = "../Files/test.png"
+
+        upload_file(driver, By.ID, "photo", png)
+        click_text_field(driver, By.ID, "name")
+        enter_text(driver, By.ID, "name", name+"menu")
+        click_text_field(driver, By.ID, "price")
+        enter_text(driver, By.ID, "price", "22")
+        click_text_field(driver, By.ID, "alternateName")
+        enter_text(driver, By.ID, "alternateName", RandomData.generate_word())
+        click_text_field(driver, By.ID, "alcoholPercentage")
+        enter_text(driver, By.ID, "alcoholPercentage", "5")
+        select_element = driver.find_element(By.ID, "ingredientId")
+        select = Select(select_element)
+        select.select_by_value("4")
+        click_text_field(driver, By.ID, "amountUsed")
+        enter_text(driver, By.ID, "amountUsed", "3")
+        click_button(driver, By.ID, "addIngridientToMenuItem")
+        click_button(driver, By.ID, "addmenuitemsubmit")
+        wait_for(delay)
+        #Do edycji menu itemu
+        element = find_text_in_elements(
+            driver,
+            By.CSS_SELECTOR,
+            "div.relative.flex.gap-2.w-full.p-4.border-\\[1px\\].border-grey-1.dark\\:border-grey-5.rounded-lg",
+            name+"menu"
+        )
+
+        actions = ActionChains(driver)
+        actions.move_to_element(element).perform()
+        elements2 = element.find_elements(By.CSS_SELECTOR, "button")
+        elements2[0].click()
+        click_text_field(driver, By.ID, "name", name+"3")
+        click_button(driver, By.ID, "addmenuitemsubmit")
+        # elements2[1].click()
+        # button = driver.find_element(By.XPATH, "//button[text()='Yes']")
+
+        # # Kliknij przycisk
+        # button.click()
+        # driver.refresh()
+
+        find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name+"2")
+
+
+        # click_button(driver, By.CSS_SELECTOR, '[data-testid="DeleteIcon"]');
+        # wait_for(delay)
+        # cancel_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Cancel')]")
+        # cancel_button.click()
         # scrollable_element = driver.find_element(By.CSS_SELECTOR,
         #                                          'div.overflow-y-auto.scroll.h-full.flex.flex-col.gap-5.scroll-smooth')
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
@@ -73,9 +145,6 @@ def test_menu_management(driver):
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
         # scrollable_element.send_keys(Keys.PAGE_DOWN)
-
-        elements = element.find_elements(By.CSS_SELECTOR, "button")
-        elements[0].click()
 
 
     except Exception as e:
