@@ -1,5 +1,8 @@
 from utils.utils import *
 from Selenium.UserLogin import test_user_login
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 ip = get_variable_value("IP_FRONTEND")
 login_path = get_variable_value("LOGIN_USER")
@@ -21,11 +24,65 @@ def test_check_restaurant(driver):
 
         wait_for_element(driver, By.ID, "root")
 
+        click_button(driver, By.ID, "homePage-listItemButton")
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="EditCalendarIcon"]');
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="EventIcon"]');
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="RestaurantMenuIcon"]');
+        menuitem_name = wait_for_element(driver, By.CSS_SELECTOR, 'h1.dark\\:text-white.text-lg.h-\\[22px\\]')
+        assert menuitem_name is not None, "Nazwa jedzenia nie jest widoczna."
+        info(f"Nazwa jedzenia: {menuitem_name.text}")
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="DeliveryDiningIcon"]');
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
+
+
         elements = get_elements_list(driver, By.CSS_SELECTOR, '[id="homePage-listItemButton"]')
 
         for element in elements:
             element.click()
             wait_for_element(driver, By.ID, "after-image-slider-controls")
+            wait_for(delay)
+
+            # Sprawdzenie obecności nazwy restauracji
+            restaurant_name = wait_for_element(driver, By.CSS_SELECTOR, 'h2.text-2xl.font-bold.dark\\:text-white')
+            assert restaurant_name is not None, "Nazwa restauracji nie jest widoczna."
+            info(f"Nazwa restauracji: {restaurant_name.text}")
+
+            # Sprawdzenie obecności opinii (średnia liczba gwiazdek oraz wizualne gwiazdki)
+            rating_value = wait_for_element(driver, By.CSS_SELECTOR, 'div.flex.items-center.gap-2.dark\\:text-white h1')
+            assert rating_value is not None, "Średnia ocena restauracji nie jest widoczna."
+            info(f"Średnia ocena restauracji: {rating_value.text}")
+
+            # Sprawdzenie obecności wizualnych gwiazdek
+            rating_stars = wait_for_element(driver, By.CSS_SELECTOR, 'div.flex.items-center.gap-2.dark\\:text-white span.MuiRating-root')
+            assert rating_stars is not None, "Gwiazdkowa ocena restauracji nie jest widoczna."
+            info("Wizualne gwiazdki są widoczne.")
+
+            # Sprawdzenie przewijania zdjęć
+            left_arrow = wait_for_element(driver, By.CSS_SELECTOR, '[data-testid="ArrowBackIosNewRoundedIcon"]')
+            right_arrow = wait_for_element(driver, By.CSS_SELECTOR, '[data-testid="ArrowForwardIosRoundedIcon"]')
+
+            # Weryfikacja, że przyciski przewijania są widoczne i działają
+            assert left_arrow is not None, "Przycisk przewijania zdjęć w lewo nie jest widoczny."
+            assert right_arrow is not None, "Przycisk przewijania zdjęć w prawo nie jest widoczny."
+
+            # Kliknięcie przycisków przewijania, aby przetestować ich działanie
+            info("Kliknięcie strzałki w prawo")
+            right_arrow.click()
+            wait_for(delay)
+
+            info("Kliknięcie strzałki w lewo")
+            left_arrow.click()
             wait_for(delay)
 
     except Exception as e:
