@@ -31,14 +31,14 @@ def test_register_employee(driver):
 
         # Czekamy na zmianę strony
         wait_for_url_to_be(driver, restaurants_management_url)
-        click_button(driver, By.ID, "menu-listItem-employees-all--button") #TODO
+        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Employee management").click()
 
         # czekamy na załadowanie tabelki
         wait_for_element(driver, By.CSS_SELECTOR,
                          "div.MuiDataGrid-row.MuiDataGrid-row--editable.MuiDataGrid-row--firstVisible", False)
 
         # sprawdzamy czy id restauracji są unikalne(nie ma powtórzeń)
-        verify_unique_column_values(driver, 'div[data-field="login"]', False)
+        verify_unique_column_values(driver, 'div[data-field="phoneNumber"]', False)
 
         # przechodzimy do fromularza rejestracji pracownika
         # czy dla tego id nie powinna byc zmieniona nazwa?
@@ -53,6 +53,7 @@ def test_register_employee(driver):
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
         # TODO: czy sa id dla error message bo narazie dla wszystkich widze: "errorMessage-wrap"
+        #TODO Zamienić na teksty błędów
 
         # lastname
         click_text_field(driver, By.ID, "lastName")
@@ -77,6 +78,15 @@ def test_register_employee(driver):
 
         wait_for_element(driver, By.ID, "errorMes-wrap")
 
+        # birth date
+        # nie ma ID
+        click_text_field(driver, By.ID, "birthDate")
+
+        press_tab_key(driver)
+
+        wait_for_element(driver, By.ID, "errorMes-wrap")
+
+
         # password
 
         click_text_field(driver, By.ID, "password")
@@ -95,13 +105,17 @@ def test_register_employee(driver):
         # Znaleznienie pola i wypełnienie go danymi
 
         # selector value to ID?
-        enter_text(driver, By.ID, "firstName", RandomData.generate_first_name())
+        first_name = RandomData.generate_first_name()
+        enter_text(driver, By.ID, "firstName", first_name)
 
-        enter_text(driver, By.ID, "lastName", RandomData.generate_last_name())
+        last_name = RandomData.generate_last_name()
+        enter_text(driver, By.ID, "lastName", last_name)
 
         enter_text(driver, By.ID, "login", RandomData.generate_login())
 
         enter_text(driver, By.NAME, "phoneNumber", RandomData.generate_phone())
+
+        enter_text(driver, By.ID, "birthDate", RandomData.generate_birth_date())
 
         password = RandomData.generate_password()
 
@@ -115,7 +129,18 @@ def test_register_employee(driver):
 
         click_button(driver, By.ID, "EmployeeRegisterSubmitButton")
 
-        # TODO: sprawdzic czy test przeszedł
+        wait_for(delay)
+
+        driver.refresh()
+
+        #czekamy na załadowanie tabelki
+        wait_for(delay)
+
+        #Sprawdzenie czy pracownik się dodał
+        find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="firstName"]', first_name)
+        find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="lastName"]', last_name)
+
+        #TODO sprawdzić usuwanie - na razie nie działa
         return True  # Test przeszedł
 
     except Exception as e:
