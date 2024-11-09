@@ -91,6 +91,7 @@ def test_menu_management(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    driver.maximize_window()
     test_user_login(driver, False)
     test_menu_management(driver)
     driver.quit()

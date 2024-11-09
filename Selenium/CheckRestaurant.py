@@ -41,6 +41,7 @@ def test_check_restaurant(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    driver.maximize_window()
     test_user_login(driver, False)
     test_check_restaurant(driver)
     driver.quit()

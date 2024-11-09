@@ -137,5 +137,6 @@ def test_user_register(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    driver.maximize_window()
     test_user_register(driver)
     driver.quit()

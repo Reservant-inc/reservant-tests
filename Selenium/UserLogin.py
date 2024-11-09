@@ -7,7 +7,7 @@ register_path = get_variable_value("REGISTER_USER")
 delay = int(get_variable_value("DELAY"))
 login_url = f"http://{ip}{login_path}"
 register_url = f"http://{ip}{register_path}"
-home_path = get_variable_value("RESERVANT_PATH")
+home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
@@ -87,5 +87,6 @@ def wybierz_email():  # Funkcja wybierająca ranomowy login z podanych
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    driver.maximize_window()
     test_user_login(driver)
     driver.quit()

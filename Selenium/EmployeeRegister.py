@@ -31,7 +31,7 @@ def test_register_employee(driver):
 
         # Czekamy na zmianę strony
         wait_for_url_to_be(driver, restaurants_management_url)
-        click_button(driver, By.ID, "menu-listItem-employees-all--button")
+        click_button(driver, By.ID, "menu-listItem-employees-all--button") #TODO
 
         # czekamy na załadowanie tabelki
         wait_for_element(driver, By.CSS_SELECTOR,
@@ -131,6 +131,7 @@ def test_register_employee(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    driver.maximize_window()
     test_user_login(driver, False)
     test_register_employee(driver)
     driver.quit()
