@@ -45,7 +45,6 @@ def test_check_restaurant(driver):
         wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
 
-
         elements = get_elements_list(driver, By.CSS_SELECTOR, '[id="homePage-listItemButton"]')
 
         for element in elements:
@@ -64,7 +63,8 @@ def test_check_restaurant(driver):
             info(f"Średnia ocena restauracji: {rating_value.text}")
 
             # Sprawdzenie obecności wizualnych gwiazdek
-            rating_stars = wait_for_element(driver, By.CSS_SELECTOR, 'div.flex.items-center.gap-2.dark\\:text-white span.MuiRating-root')
+            rating_stars = wait_for_element(driver, By.CSS_SELECTOR,
+                                            'div.flex.items-center.gap-2.dark\\:text-white span.MuiRating-root')
             assert rating_stars is not None, "Gwiazdkowa ocena restauracji nie jest widoczna."
             info("Wizualne gwiazdki są widoczne.")
 
