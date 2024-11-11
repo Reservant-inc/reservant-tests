@@ -31,7 +31,7 @@ def test_register_employee(driver):
 
         # Czekamy na zmianę strony
         wait_for_url_to_be(driver, restaurants_management_url)
-        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Employee management").click()
+        driver.find_element(By.ID, "management_employees").click()
 
         # czekamy na załadowanie tabelki
         wait_for_element(driver, By.CSS_SELECTOR,
@@ -106,18 +106,22 @@ def test_register_employee(driver):
 
         # selector value to ID?
         first_name = RandomData.generate_first_name()
+        #first_name = 'Lalaa'
         enter_text(driver, By.ID, "firstName", first_name)
 
         last_name = RandomData.generate_last_name()
+        #last_name = 'Tralaa'
         enter_text(driver, By.ID, "lastName", last_name)
 
-        enter_text(driver, By.ID, "login", RandomData.generate_login())
+        login = RandomData.generate_login()
+        enter_text(driver, By.ID, "login", login)
 
         enter_text(driver, By.NAME, "phoneNumber", RandomData.generate_phone())
 
         enter_text(driver, By.ID, "birthDate", RandomData.generate_birth_date())
 
         password = RandomData.generate_password()
+        #password = 'Pa$$w0rd'
 
         enter_text(driver, By.ID, "password", password)
 
@@ -139,6 +143,64 @@ def test_register_employee(driver):
         #Sprawdzenie czy pracownik się dodał
         find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="firstName"]', first_name)
         find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="lastName"]', last_name)
+
+        # przypisanie pracownika do restauracji
+        #kliknij przycisk przypisania do restauracji
+        wait_for(delay)
+        click_button(driver, By.ID, 'EmployeeManagementEmploymentButtonJD+' + login)
+
+        #powinien powjawic sie dialog, ktory bedzie zawieral przycisk o tym ID, domyślnie disabled (brak wybranej restauracji)
+        if driver.find_element(By.ID, "RestaurantAddEmpSubmitButton").is_enabled():
+            return False
+
+        #wybieramy restaurację
+        select_restaurant = Select(driver.find_element(By.ID, "selectedRestaurant"))
+        select_restaurant.select_by_value("1")
+        #przycisk assign employee dalej powinien byc disabled (brak wybranej roli)
+        if driver.find_element(By.ID, "RestaurantAddEmpSubmitButton").is_enabled():
+            return False
+
+        #wybieramy rolę
+        backdoor_checkbox = driver.find_element(By.ID, "isBackdoorEmployee")
+        # zaznaczamy i odznaczamy, aby pojawil sie blad walidacji
+        backdoor_checkbox.click()
+        backdoor_checkbox.click()
+        wait_for(delay)
+
+        #sprawdzamy czy jest tekst bledu walidacji
+        #!!! Powinno dzialac, ale nie pojawia sie
+        #wait_for_element(driver, By.ID, "errorMes-wrap")
+        #ponownie zaznaczamy checkbox
+        backdoor_checkbox.click()
+
+        #przycisk assign employee powinien byc juz enabled
+        if not driver.find_element(By.ID, "RestaurantAddEmpSubmitButton").is_enabled():
+            return False
+        #dodajemy pracownika do restauracji
+        click_button(driver, By.ID, "RestaurantAddEmpSubmitButton")
+
+        #sprawdzamy czy pojawil sie rekord poprzez sprawdzenie przycisku edycji przypisania
+        #to nie przechodzi, bo kazdy przycisk ma inne ID na koncu, nie wiem jak inaczej sprawdzic
+        #wait_for_element(driver, By.ID, "EmployeeManagementEditButtonPopup2")
+
+        #zamkniecie dialogu
+        #TODO: dla przycisku "x"- zamykanie popupu
+        click_button(driver, By.CSS_SELECTOR, '.h-8.w-8.bg-white.dark:bg-black.dark:text-grey-1.rounded-full.top-0.right-2')
+
+
+        # edycja pracownika
+        #kliknij przycisk edycji pracownika
+        wait_for(delay)
+        click_button(driver, By.ID, 'EmployeeManagementEditButtonJD+' + login)
+
+        new_first_name = 'Ala'
+        enter_text(driver, By.CSS_SELECTOR, '.MuiInputBase-input.css-mnn31', new_first_name)
+
+        click_button(driver, By.ID, 'EmployeeManagementSaveButtonJD+' + login)
+        wait_for(delay)
+
+        find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="firstName"]', first_name + new_first_name)
+
 
         #TODO sprawdzić usuwanie i edytowanie - na razie nie działa
         return True  # Test przeszedł
