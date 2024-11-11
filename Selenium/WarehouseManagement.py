@@ -23,7 +23,7 @@ def test_warehouse_management(driver):
         click_button(driver, By.ID, "management_restaurants")
         wait_for(delay)
 
-        click_button(driver, By.ID, "RestaurantSeeDetailsButton0John Doe's 2")
+        click_button(driver, By.ID, "RestaurantSeeDetailsButton1John Doe's 2")
         wait_for(delay)
 
         click_button(driver, By.ID, "management_restaurant_warehouse")
@@ -35,6 +35,8 @@ def test_warehouse_management(driver):
 
         enter_text(driver, By.NAME, "name", RandomData.generate_word())
         select_option_by_visible_text(driver, By.NAME, "unitOfMeasurement", RandomData.generate_unit_of_measurement())
+
+        # TODO dodać wprowadzenie wartości do pól z ilościami, po tym jak zostaną im nadane unikatowe nazwy/id
 
         # TODO dodać click_button dla przycisku do dodawania składnika
 
