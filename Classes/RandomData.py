@@ -136,3 +136,7 @@ class RandomData:
         # Lista przykładowych tagów
         possible_tags = ['Italian', 'Mexican', 'Chinese', 'Vegetarian', 'Seafood', 'Fast Food']
         return random.sample(possible_tags, n)
+
+    @staticmethod
+    def generate_unit_of_measurement():
+        return random.choice(["Gram", "Liter", "Unit"])
