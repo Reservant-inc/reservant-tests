@@ -27,6 +27,7 @@ def test_check_restaurant(driver):
         click_button(driver, By.ID, "homePage-listItemButton")
         wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="EditCalendarIcon"]')
+        wait_for(delay)
         # click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
         driver.back()
         click_button(driver, By.ID, "homePage-listItemButton")
@@ -39,13 +40,9 @@ def test_check_restaurant(driver):
         wait_for(delay)
         #Sprawdzamy czy wyświetlają się jakieś dania \/
         find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.gap-3", "zł")
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="ChevronRightIcon"]');
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="ChevronLeftIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="ChevronRightIcon"]')
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="ChevronLeftIcon"]')
         wait_for(delay)
-        # menuitem_name = wait_for_element(driver, By.CSS_SELECTOR, 'h1.dark\\:text-white.text-lg.h-\\[22px\\]')
-        # assert menuitem_name is not None, "Nazwa jedzenia nie jest widoczna."
-        # info(f"Nazwa jedzenia: {menuitem_name.text}")
-        # wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
         wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="DeliveryDiningIcon"]')
