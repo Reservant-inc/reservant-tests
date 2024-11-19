@@ -22,14 +22,9 @@ def test_employee_management(driver):
 
         wait_for_element(driver, By.ID, "root")
 
+        go_to_restaurant_management(driver)
 
-        click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
-        wait_for(delay)
-
-        click_button(driver, By.ID, "RestaurantSeeDetailsButton0John Doe's 2")
-        wait_for(delay)
-
-        click_button(driver, By.ID, "div.MuiButtonBase-root.MuiListItemButton-root.MuiListItemButton-gutters.MuiListItemButton-root.MuiListItemButton-gutters.bg-white.dark:bg-black.h-full.w-full.rounded-t-lg.px-4.dark:text-grey-1.css-1uwabd6")
+        click_button(driver, By.ID, "management_restaurant_employees")
         wait_for(delay)
 
         #czekamy na załadowanie tabelki
@@ -153,6 +148,7 @@ def test_employee_management(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Edge()
+    driver.maximize_window()
     test_user_login(driver, False)
     test_employee_management(driver)
     driver.quit()

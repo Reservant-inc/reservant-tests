@@ -12,7 +12,7 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
-def test_menu_management(driver, diff_path = False):
+def test_menu_management(driver, diff_path=False):
     info("TEST MENU MANAGEMENT")
     try:
         driver.get(home_url)
@@ -20,19 +20,11 @@ def test_menu_management(driver, diff_path = False):
 
         # TWORZENIE MENU
         check_page_title(driver, "React App")
-
         wait_for_element(driver, By.ID, "root")
 
-        click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
-        # wait_for(delay)
+        go_to_restaurant_management(driver)
 
-        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Restaurants").click()
-        # wait_for(delay)
-
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="ArrowForwardIosIcon"]')
-        wait_for(delay)
-
-        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Menu management").click()
+        click_button(driver, By.ID, "management_restaurant_menus")
 
         click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]')
 
@@ -75,10 +67,9 @@ def test_menu_management(driver, diff_path = False):
         click_button(driver, By.ID, "addmenuSubmit")
         wait_for(delay)
 
-        element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name+"2")
+        element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name + "2")
         elements = element.find_elements(By.CSS_SELECTOR, "button")
         elements[0].click()
-
 
         if (diff_path):
             png = "Files/test.png"
@@ -87,7 +78,7 @@ def test_menu_management(driver, diff_path = False):
 
         upload_file(driver, By.ID, "photo", png)
         click_text_field(driver, By.ID, "name")
-        enter_text(driver, By.ID, "name", name+"menu")
+        enter_text(driver, By.ID, "name", name + "menu")
         click_text_field(driver, By.ID, "price")
         enter_text(driver, By.ID, "price", "22")
         click_text_field(driver, By.ID, "alternateName")
@@ -103,12 +94,12 @@ def test_menu_management(driver, diff_path = False):
         wait_for(delay)
         click_button(driver, By.ID, "addmenuitemsubmit")
         wait_for(delay)
-        #Do edycji menu itemu
+        # Do edycji menu itemu
         element = find_text_in_elements(
             driver,
             By.CSS_SELECTOR,
             "div.relative.flex.gap-2.w-full.p-4.border-\\[1px\\].border-grey-1.dark\\:border-grey-5.rounded-lg",
-            name+"menu"
+            name + "menu"
         )
 
         actions = ActionChains(driver)
@@ -117,15 +108,15 @@ def test_menu_management(driver, diff_path = False):
         print(elements2)
         elements2[0].click()
 
-        #click_text_field(driver, By.ID, "name") tutaj cos
-        #enter_text(driver, By.ID, "name", name+"3")
+        # click_text_field(driver, By.ID, "name") tutaj cos
+        # enter_text(driver, By.ID, "name", name+"3")
 
         wait_for(delay)
         # # tutaj cos nie dziala
         # svg_icon = driver.find_element(By.CSS_SELECTOR, ".MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium")
         # svg_icon.click()
         # wait_for(delay)
-        click_text_field(driver, By.ID, "name", name+"3")
+        click_text_field(driver, By.ID, "name", name + "3")
         wait_for(delay)
 
         click_button(driver, By.ID, "addmenuitemsubmit")
@@ -147,7 +138,6 @@ def test_menu_management(driver, diff_path = False):
         button.click()
         wait_for(delay)
 
-
         element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name + "2")
         elements = element.find_elements(By.CSS_SELECTOR, "button")
         elements[2].click()
@@ -162,7 +152,6 @@ def test_menu_management(driver, diff_path = False):
         # driver.refresh()
 
         # find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name+"2")
-
 
         # click_button(driver, By.CSS_SELECTOR, '[data-testid="DeleteIcon"]');
         # wait_for(delay)

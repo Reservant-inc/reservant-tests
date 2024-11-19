@@ -46,6 +46,12 @@ def info(message):
     print(message)
 
 
+def go_to_restaurant_management(driver):
+    click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
+    click_button(driver, By.ID, "management_restaurants")
+    click_button(driver, By.CSS_SELECTOR, '[data-testid="ArrowForwardIosIcon"]')
+
+
 def click_button(driver, selector_type, selector_value, critical=True):
     """
     Znajduje i klika przycisk na stronie używając podanego selektora.

@@ -17,14 +17,7 @@ def test_warehouse_management(driver):
 
         wait_for_element(driver, By.ID, "root")
 
-        click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
-        wait_for(delay)
-
-        click_button(driver, By.ID, "management_restaurants")
-        wait_for(delay)
-
-        click_button(driver, By.ID, "RestaurantSeeDetailsButton1John Doe's 2")
-        wait_for(delay)
+        go_to_restaurant_management(driver)
 
         click_button(driver, By.ID, "management_restaurant_warehouse")
         wait_for(delay)

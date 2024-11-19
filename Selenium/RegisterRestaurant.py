@@ -29,7 +29,7 @@ def test_register_restaurant(driver, diff_path=False):
         # Czekamy na zmianę strony
         wait_for_url_to_be(driver, restaurants_management_url)
 
-        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Restaurants").click()
+        click_button(driver, By.ID, "management_restaurants")
 
         # czekamy na załadowanie tabelki
         wait_for_element(driver, By.CSS_SELECTOR,

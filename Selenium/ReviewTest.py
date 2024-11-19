@@ -23,16 +23,9 @@ def test_menu_management(driver):
 
         wait_for_element(driver, By.ID, "root")
 
-        click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
-        wait_for(delay)
+        go_to_restaurant_management(driver)
 
-        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Restaurants").click()
-        wait_for(delay)
-
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="ArrowForwardIosIcon"]')
-        wait_for(delay)
-
-        find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Reviews").click()
+        click_button(driver, By.ID, "management_restaurant_reviews")
 
         click_button(driver, By.CSS_SELECTOR, '[data-testid="SwapVertIcon"]')
         wait_for(delay)
