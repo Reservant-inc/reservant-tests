@@ -12,7 +12,7 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
-def test_menu_management(driver, diff_path = False):
+def test_menu_management(driver):
     info("TEST MENU MANAGEMENT")
     try:
         driver.get(home_url)
@@ -63,6 +63,7 @@ def test_menu_management(driver, diff_path = False):
         yes_button.click()
         wait_for(delay)
         driver.refresh()
+        #TODO recenzje z poziomu użytkownika
 
     except Exception as e:
         result(str(e), False)
