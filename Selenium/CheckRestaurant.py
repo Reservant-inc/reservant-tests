@@ -31,11 +31,11 @@ def test_check_restaurant(driver):
         driver.back()
         click_button(driver, By.ID, "homePage-listItemButton")
         wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="EventIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="EventIcon"]')
         wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
         wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="RestaurantMenuIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="RestaurantMenuIcon"]')
         wait_for(delay)
         #Sprawdzamy czy wyświetlają się jakieś dania \/
         find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.gap-3", "zł")
@@ -46,11 +46,11 @@ def test_check_restaurant(driver):
         # assert menuitem_name is not None, "Nazwa jedzenia nie jest widoczna."
         # info(f"Nazwa jedzenia: {menuitem_name.text}")
         # wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
         wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="DeliveryDiningIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="DeliveryDiningIcon"]')
         wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
 
         wait_for(delay)
         driver.refresh()
@@ -60,7 +60,7 @@ def test_check_restaurant(driver):
         three_star_input = driver.find_element(By.XPATH, "//input[@type='radio' and @value='3']")
         three_star_input.find_element(By.XPATH, "./..").click()
         wait_for(delay)
-        click_button(driver, By.CSS_SELECTOR, '[data-testid="SwapVertIcon"]');
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="SwapVertIcon"]')
         wait_for(delay)
         # click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]');
         # wait_for(delay)
