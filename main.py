@@ -14,6 +14,11 @@ from Selenium.RegisterRestaurant import test_register_restaurant
 from Selenium.MenuManagement import test_menu_management
 from Selenium.CheckRestaurant import test_check_restaurant
 from Selenium.WarehouseManagement import test_warehouse_management
+from Services.recreate_database import DebugService
+from utils.utils import get_variable_value
+
+ip = get_variable_value("IP_BACKEND")
+backend_url = f"http://{ip}"
 
 
 def main():
@@ -54,4 +59,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    service = DebugService(backend_url)
+    try:
+        result = service.recreate_database()
+        print("Odpowiedź serwera:", result)
+        main()
+    except Exception as e:
+        print("Nie udało się wywołać końcówki:", e)
