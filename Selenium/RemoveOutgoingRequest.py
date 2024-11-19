@@ -32,13 +32,11 @@ def test_remove_outgoing_request(driver):
         wait_for(delay)
 
         # Otwieram zakładkę Znajomi
-        wait_for_element(driver, By.XPATH, "//h1[contains(text(), 'Friends') or contains(text(), 'Znajomi')]").click()
+        click_button(driver, By.XPATH, "//h1[contains(text(), 'Friends') or contains(text(), 'Znajomi')]")
         wait_for(delay)
 
         # Przełączam zakładkę na 'Wysłane zaproszenia'
-        sent_requests_tab = driver.find_element(By.XPATH,
-                                                "//button[contains(text(), 'Wysłane zaproszenia') or contains(text(), 'Outgoing requests')]")
-        sent_requests_tab.click()
+        click_button(driver, By.XPATH, "//button[contains(text(), 'Wysłane zaproszenia') or contains(text(), 'Outgoing requests')]")
         wait_for(delay)
 
         # Szukam elementu listy który zawiera 'Geralt Riv'

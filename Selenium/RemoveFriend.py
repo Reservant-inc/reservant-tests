@@ -32,11 +32,12 @@ def test_remove_friend(driver):
         wait_for(delay)
 
         # Otwieram zakładkę Znajomi
-        wait_for_element(driver, By.XPATH, "//h1[contains(text(), 'Friends') or contains(text(), 'Znajomi')]").click()
+        click_button(driver, By.XPATH, "//h1[contains(text(), 'Friends') or contains(text(), 'Znajomi')]")
         wait_for(delay)
 
         # Szukam elementu listy który zawiera 'Krzysztof Kowalski'
         # Jeśli nie ma elementu to kończy tekst (trzeba wykonać rebuild db)
+        #TODO id
         li_element = wait_for_element(driver, By.XPATH, "//li[contains(., 'Krzysztof') and contains(., 'Kowalski')]",
                                       critical=True)
 

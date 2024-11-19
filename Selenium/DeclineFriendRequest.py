@@ -29,7 +29,7 @@ def test_decline_friend_invite(driver):
         wait_for(delay)
 
         # Wysyłanie zaproszenia do znajomych do pierwszego wyszukanego znajomego (w tym przypadku Ewa Przykładowska)
-        wait_for_element(driver, By.XPATH, "(//button[contains(text(), 'Send request') or contains(text(), 'Undo request')])[1]").click()
+        click_button(driver, By.XPATH, "(//button[contains(text(), 'Send request') or contains(text(), 'Undo request')])[1]")
         wait_for(delay)
 
         # Sprawdzam czy poprawnie wysłano zaproszenie - tekst zmienia się na "Undo request"
@@ -60,7 +60,7 @@ def test_decline_friend_invite(driver):
         wait_for(delay)
 
         # Odrzucenie zaproszenia
-        wait_for_element(driver, By.CSS_SELECTOR, "svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.h-5.w-5.css-vubbuv").click()
+        click_button(driver, By.CSS_SELECTOR, "svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.h-5.w-5.css-vubbuv")
 
 
         # Test się powiódł
