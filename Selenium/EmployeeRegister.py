@@ -154,8 +154,8 @@ def test_register_employee(driver):
             return False
 
         #wybieramy restaurację
-        select_restaurant = Select(driver.find_element(By.ID, "selectedRestaurant"))
-        select_restaurant.select_by_value("1")
+        wait_for(delay)
+        select_option_by_visible_text(driver, By.ID, "selectedRestaurant", "John Doe's")
         #przycisk assign employee dalej powinien byc disabled (brak wybranej roli)
         if driver.find_element(By.ID, "RestaurantAddEmpSubmitButton").is_enabled():
             return False
@@ -164,12 +164,13 @@ def test_register_employee(driver):
         backdoor_checkbox = driver.find_element(By.ID, "isBackdoorEmployee")
         # zaznaczamy i odznaczamy, aby pojawil sie blad walidacji
         backdoor_checkbox.click()
+        wait_for(delay)
         backdoor_checkbox.click()
         wait_for(delay)
 
         #sprawdzamy czy jest tekst bledu walidacji
         #!!! Powinno dzialac, ale nie pojawia sie
-        #wait_for_element(driver, By.ID, "errorMes-wrap")
+        wait_for_element(driver, By.ID, "errorMes-wrap", critical=False)
         #ponownie zaznaczamy checkbox
         backdoor_checkbox.click()
 
@@ -185,7 +186,7 @@ def test_register_employee(driver):
 
         #zamkniecie dialogu
         #TODO: dla przycisku "x"- zamykanie popupu
-        click_button(driver, By.CSS_SELECTOR, '.h-8.w-8.bg-white.dark:bg-black.dark:text-grey-1.rounded-full.top-0.right-2')
+        click_button(driver, By.CSS_SELECTOR, '.h-8.w-8.bg-white.dark\\:bg-black.dark\\:text-grey-1.rounded-full.top-0.right-2')
 
 
         # edycja pracownika
