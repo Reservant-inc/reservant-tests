@@ -12,7 +12,7 @@ home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
 
-def test_menu_management(driver):
+def test_review(driver):
     info("TEST MENU MANAGEMENT")
     try:
         driver.get(home_url)

@@ -13,6 +13,7 @@ login_url = f"http://{ip}{login_path}"
 home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
+
 def test_remove_friend(driver):
     info("TEST REMOVING A FRIEND FROM YOUR FRIENDS LIST VIA USER'S PROFILE TAB")
     try:
@@ -37,7 +38,7 @@ def test_remove_friend(driver):
 
         # Szukam elementu listy który zawiera 'Krzysztof Kowalski'
         # Jeśli nie ma elementu to kończy tekst (trzeba wykonać rebuild db)
-        #TODO id
+        # TODO id
         li_element = wait_for_element(driver, By.XPATH, "//li[contains(., 'Krzysztof') and contains(., 'Kowalski')]",
                                       critical=True)
 

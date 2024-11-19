@@ -13,6 +13,7 @@ login_url = f"http://{ip}{login_path}"
 home_path = get_variable_value("HOME_PATH")
 home_url = f"http://{ip}{home_path}"
 
+
 def test_remove_outgoing_request(driver):
     info("REMOVE AN OUTGOING FRIEND REQUEST VIA USER'S PROFILE TAB")
     try:
@@ -36,7 +37,8 @@ def test_remove_outgoing_request(driver):
         wait_for(delay)
 
         # Przełączam zakładkę na 'Wysłane zaproszenia'
-        click_button(driver, By.XPATH, "//button[contains(text(), 'Wysłane zaproszenia') or contains(text(), 'Outgoing requests')]")
+        click_button(driver, By.XPATH,
+                     "//button[contains(text(), 'Wysłane zaproszenia') or contains(text(), 'Outgoing requests')]")
         wait_for(delay)
 
         # Szukam elementu listy który zawiera 'Geralt Riv'
@@ -45,7 +47,8 @@ def test_remove_outgoing_request(driver):
                                       critical=True)
 
         # Szukam guzika do cofnięcia zaproszenia
-        button = li_element.find_element(By.CSS_SELECTOR, "button.mt-2.border-\\[1px\\].text-sm.p-2.w-fit.rounded-lg.bg-grey-0.border-primary.text-primary.transition.hover\\:scale-105.hover\\:bg-primary.hover\\:text-white")
+        button = li_element.find_element(By.CSS_SELECTOR,
+                                         "button.mt-2.border-\\[1px\\].text-sm.p-2.w-fit.rounded-lg.bg-grey-0.border-primary.text-primary.transition.hover\\:scale-105.hover\\:bg-primary.hover\\:text-white")
         button.click()
         wait_for(delay)
 
