@@ -62,7 +62,7 @@ def test_check_restaurant(driver):
         wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="SwapVertIcon"]')
         wait_for(delay)
-        # click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]');
+        # click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]')
         # wait_for(delay)
         # Nizej: Message: element click intercepted Do sprawdzenia
         # three_star_input = WebDriverWait(driver, 10).until(
