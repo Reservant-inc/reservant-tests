@@ -24,10 +24,10 @@ def test_menu_management(driver, diff_path = False):
         wait_for_element(driver, By.ID, "root")
 
         click_button(driver, By.ID, "NavbarRestaurantsSectionButton")
-        wait_for(delay)
+        # wait_for(delay)
 
         find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.items-center.gap-4", "Restaurants").click()
-        wait_for(delay)
+        # wait_for(delay)
 
         click_button(driver, By.CSS_SELECTOR, '[data-testid="ArrowForwardIosIcon"]')
         wait_for(delay)
@@ -100,6 +100,7 @@ def test_menu_management(driver, diff_path = False):
         click_text_field(driver, By.ID, "amountUsed")
         enter_text(driver, By.ID, "amountUsed", "3")
         click_button(driver, By.ID, "addIngridientToMenuItem")
+        wait_for(delay)
         click_button(driver, By.ID, "addmenuitemsubmit")
         wait_for(delay)
         #Do edycji menu itemu
@@ -115,17 +116,52 @@ def test_menu_management(driver, diff_path = False):
         elements2 = element.find_elements(By.CSS_SELECTOR, "button")
         print(elements2)
         elements2[0].click()
-        click_text_field(driver, By.ID, "name")
-        enter_text(driver, By.ID, "name", name+"3")
+
+        #click_text_field(driver, By.ID, "name") tutaj cos
+        #enter_text(driver, By.ID, "name", name+"3")
+
+        wait_for(delay)
+        # # tutaj cos nie dziala
+        # svg_icon = driver.find_element(By.CSS_SELECTOR, ".MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium")
+        # svg_icon.click()
+        # wait_for(delay)
+        click_text_field(driver, By.ID, "name", name+"3")
+        wait_for(delay)
+
         click_button(driver, By.ID, "addmenuitemsubmit")
+        wait_for(delay)
         # elements2[1].click()
         # button = driver.find_element(By.XPATH, "//button[text()='Yes']")
+        element = find_text_in_elements(
+            driver,
+            By.CSS_SELECTOR,
+            "div.relative.flex.gap-2.w-full.p-4.border-\\[1px\\].border-grey-1.dark\\:border-grey-5.rounded-lg",
+            name + "menu"
+        )
+        actions = ActionChains(driver)
+        actions.move_to_element(element).perform()
+        elements2 = element.find_elements(By.CSS_SELECTOR, "button")
+        elements2[1].click()
+        wait_for(delay)
+        button = driver.find_element(By.CSS_SELECTOR, ".MuiButton-root.MuiButton-textError")
+        button.click()
+        wait_for(delay)
+
+
+        element = find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name + "2")
+        elements = element.find_elements(By.CSS_SELECTOR, "button")
+        elements[2].click()
+        wait_for(delay)
+        button = driver.find_element(By.CSS_SELECTOR, ".MuiButton-root.MuiButton-textError")
+        button.click()
+        wait_for(delay)
+        driver.refresh()
 
         # # Kliknij przycisk
         # button.click()
         # driver.refresh()
 
-        find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name+"2")
+        # find_text_in_elements(driver, By.CSS_SELECTOR, "div.w-full.flex.justify-between.pr-3", name+"2")
 
 
         # click_button(driver, By.CSS_SELECTOR, '[data-testid="DeleteIcon"]');

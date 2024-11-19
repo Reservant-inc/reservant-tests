@@ -25,18 +25,52 @@ def test_check_restaurant(driver):
         wait_for_element(driver, By.ID, "root")
 
         click_button(driver, By.ID, "homePage-listItemButton")
+        wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="EditCalendarIcon"]')
+        wait_for(delay)
         # click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
         driver.back()
         click_button(driver, By.ID, "homePage-listItemButton")
+        wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="EventIcon"]')
+        wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
+        wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="RestaurantMenuIcon"]')
+        wait_for(delay)
         #Sprawdzamy czy wyświetlają się jakieś dania \/
         find_text_in_elements(driver, By.CSS_SELECTOR, "div.flex.gap-3", "zł")
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="ChevronRightIcon"]')
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="ChevronLeftIcon"]')
+        wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
+        wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="DeliveryDiningIcon"]')
+        wait_for(delay)
         click_button(driver, By.CSS_SELECTOR, '[data-testid="CloseSharpIcon"]')
+
+        wait_for(delay)
+        driver.refresh()
+        wait_for(delay)
+        click_button(driver, By.ID, "homePage-listItemButton")
+        wait_for(delay)
+        three_star_input = driver.find_element(By.XPATH, "//input[@type='radio' and @value='3']")
+        three_star_input.find_element(By.XPATH, "./..").click()
+        wait_for(delay)
+        click_button(driver, By.CSS_SELECTOR, '[data-testid="SwapVertIcon"]')
+        wait_for(delay)
+        # click_button(driver, By.CSS_SELECTOR, '[data-testid="AddIcon"]')
+        # wait_for(delay)
+        # Nizej: Message: element click intercepted Do sprawdzenia
+        # three_star_input = WebDriverWait(driver, 10).until(
+        #     EC.element_to_be_clickable((By.XPATH, "//input[@type='radio' and @value='3']"))
+        # )
+        # three_star_input.click()
+        # textarea = driver.find_element(By.CSS_SELECTOR, ".w-full.p-4.border.rounded")
+        # textarea.send_keys("Testowa opinia")
+        # wait_for(delay)
+        # submit_button = driver.find_element(By.CSS_SELECTOR, ".MuiButton-root.MuiButton-textPrimary.rounded-lg")
+        # submit_button.click()
 
         elements = get_elements_list(driver, By.CSS_SELECTOR, '[id="homePage-listItemButton"]')
 
@@ -76,7 +110,7 @@ def test_check_restaurant(driver):
 
             info("Kliknięcie strzałki w lewo")
             left_arrow.click()
-            wait_for(delay)
+
 
     except Exception as e:
         result(str(e), False)
