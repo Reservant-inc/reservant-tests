@@ -31,7 +31,7 @@ def test_accept_friend_invite(driver):
         wait_for(delay)
 
         # Wysyłanie zaproszenia do znajomych do pierwszego wyszukanego znajomego (w tym przypadku ...)
-        wait_for_element(driver, By.XPATH, "(//button[contains(text(), 'Send request') or contains(text(), 'Undo request')])[1]").click()
+        click_button(driver, By.XPATH, "(//button[contains(text(), 'Send request') or contains(text(), 'Undo request')])[1]")
         wait_for(delay)
 
         # Sprawdzam czy poprawnie wysłano zaproszenie - tekst zmienia się na "Undo request"
