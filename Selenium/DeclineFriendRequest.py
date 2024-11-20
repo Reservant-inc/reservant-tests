@@ -39,11 +39,16 @@ def test_decline_friend_invite(driver):
         # Odrzucanie zaproszenia z poziomu inputu do wyszukiwania osób
 
         # Wylogowywanie
+        # todo szybk fix; podmienić jak pojawi się mój pull request z fixem na serwerze
         click_button(driver, By.ID, "ToolsButton")
-        click_button(driver, By.ID, "logoutDropdownItem")
+        # click_button(driver, By.ID, "logoutDropdownItem")
+        click_button(driver, By.XPATH, "//span[contains(text(), 'Wylogowanie') or contains(text(), 'Sign out')]", "Wylogowanie lub Sign out")
+
 
         # Logowanie na Ewę Przykładowską
-        click_button(driver, By.ID, "serverLink")
+        # click_button(driver, By.ID, "serverLink")
+        # todo szybki fix; trzeba dodać id do nowych buttonów logowania
+        click_button(driver, By.XPATH, "//button[contains(text(), 'LOGIN')]")
         enter_text(driver, By.ID, "login", "customer2")
         enter_text(driver, By.ID, "password", "Pa$$w0rd")
         wait_for(delay)
@@ -55,13 +60,15 @@ def test_decline_friend_invite(driver):
         wait_for_url_to_be(driver, home_url)
 
         # Wyszukanie John Doe żeby jego odrzucić zaproszenie z poziomu wyszukiwania
+
         enter_text(driver, By.CSS_SELECTOR,
                    "input.clean-input.h-8.w-\\[250px\\].p-2.placeholder\\:text-grey-2.dark\\:text-grey-1", "John Doe")
         wait_for(delay)
 
         # Odrzucenie zaproszenia
+        # todo jeszcze to?
         click_button(driver, By.CSS_SELECTOR, "svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.h-5.w-5.css-vubbuv")
-
+        wait_for(delay)
 
         # Test się powiódł
         return True

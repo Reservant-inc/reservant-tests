@@ -29,29 +29,21 @@ def test_remove_friend(driver):
         wait_for(delay)
 
         # Klikam Profil
-        click_button(driver, By.ID, "profileDropdownItem")
+        # todo podmienić na to z id jak się pojawi mój pull z fixem na serwerze
+        click_button(driver, By.XPATH, "//span[contains(text(), 'Profile') or contains(text(), 'Profil')]")
+        # click_button(driver, By.ID, "profileDropdownItem")
         wait_for(delay)
 
         # Otwieram zakładkę Znajomi
-        click_button(driver, By.XPATH, "//h1[contains(text(), 'Friends') or contains(text(), 'Znajomi')]")
+        click_button(driver, By.ID, "profileFriendsSection")
         wait_for(delay)
 
-        # Szukam elementu listy który zawiera 'Krzysztof Kowalski'
-        # Jeśli nie ma elementu to kończy tekst (trzeba wykonać rebuild db)
-        # TODO id
-        li_element = wait_for_element(driver, By.XPATH, "//li[contains(., 'Krzysztof') and contains(., 'Kowalski')]",
-                                      critical=True)
-
-        # Szukam diva z przyciskami
-        div_element = li_element.find_element(By.CSS_SELECTOR, "div.flex.gap-4.mt-2")
-
-        # Szukam pierwszy guzik (Odpowiedzialny za usuwanie znajomego)
-        first_child = div_element.find_element(By.XPATH, "./*")
-        first_child.click()
+        # Szukam guzik od usuwania znajomego dla Krzysztof Kowalski; jesli nie ma trzeba rebuild db
+        click_button(driver, By.ID, "KrzysztofKowalskiRemoveFriend", critical=True)
         wait_for(delay)
 
         # Klikam 'Tak' w Popupie potwierdzającym usunięcie znajomego
-        click_button(driver, By.XPATH, "(//button[contains(text(), 'Tak') or contains(text(), 'Yes')])")
+        click_button(driver, By.ID, "FriendRemovalConfirmationButton")
         wait_for(delay)
 
         return True
