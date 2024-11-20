@@ -24,32 +24,27 @@ def test_remove_outgoing_request(driver):
         check_page_title(driver, "React App")
         wait_for_element(driver, By.ID, "root")
 
-        # Klikaw na avatar
+        # Klikam na avatar
         click_button(driver, By.ID, "ToolsButton")
         wait_for(delay)
 
         # Klikam Profil
-        click_button(driver, By.ID, "profileDropdownItem")
+        # todo podmienić na to z id jak się pojawi mój pull z fixem na serwerze
+        click_button(driver, By.XPATH, "//span[contains(text(), 'Profile') or contains(text(), 'Profil')]")
+        # click_button(driver, By.ID, "profileDropdownItem")
         wait_for(delay)
 
         # Otwieram zakładkę Znajomi
-        click_button(driver, By.XPATH, "//h1[contains(text(), 'Friends') or contains(text(), 'Znajomi')]")
+        click_button(driver, By.ID, "profileFriendsSection")
         wait_for(delay)
 
         # Przełączam zakładkę na 'Wysłane zaproszenia'
-        click_button(driver, By.XPATH,
-                     "//button[contains(text(), 'Wysłane zaproszenia') or contains(text(), 'Outgoing requests')]")
+        click_button(driver, By.ID, "ProfileOutgoingRequests")
         wait_for(delay)
 
-        # Szukam elementu listy który zawiera 'Geralt Riv'
+        # Szukam przycisku do cofnięcia zaproszenia dla Geralt Riv
         # Jeśli nie ma elementu to kończy tekst (trzeba wykonać recreate database)
-        li_element = wait_for_element(driver, By.XPATH, "//li[contains(., 'Geralt') and contains(., 'Riv')]",
-                                      critical=True)
-
-        # Szukam guzika do cofnięcia zaproszenia
-        button = li_element.find_element(By.CSS_SELECTOR,
-                                         "button.mt-2.border-\\[1px\\].text-sm.p-2.w-fit.rounded-lg.bg-grey-0.border-primary.text-primary.transition.hover\\:scale-105.hover\\:bg-primary.hover\\:text-white")
-        button.click()
+        click_button(driver, By.ID, "GeraltRivRemoveOutgoingRequest", critical=True)
         wait_for(delay)
 
         return True
