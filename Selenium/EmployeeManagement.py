@@ -97,11 +97,14 @@ def test_employee_management(driver):
 
         # Znaleznienie pola i wypełnienie go danymi
 
-        enter_text(driver, By.ID, "firstName", RandomData.generate_first_name())
+        first_name = RandomData.generate_first_name()
+        enter_text(driver, By.ID, "firstName", first_name)
 
-        enter_text(driver, By.ID, "lastName", RandomData.generate_last_name())
+        last_name = RandomData.generate_last_name()
+        enter_text(driver, By.ID, "lastName", last_name)
 
-        enter_text(driver, By.ID, "login", RandomData.generate_login())
+        login = RandomData.generate_login()
+        enter_text(driver, By.ID, "login", login)
 
         enter_text(driver, By.NAME, "phoneNumber", RandomData.generate_phone())
 
@@ -121,23 +124,56 @@ def test_employee_management(driver):
 
 
     #sprawdzenie przypisania (backdoor/hall)
-        #TO DO
+        # czekamy na załadowanie tabelki
+        wait_for(delay)
+
+        # sprawdzam czy wyswietla sie pracownik
+
+
+        # dla pracownika sprawdzam czy ,a w przynajmniej jednej kolumnie ("Hall" i "Backdoor") TICK icon
+
+        #składnia: element = driver.find_element(By.CSS_SELECTOR, "[data-test-id='submit-button']")
+
+
 
     #edytowanie pracownika
-        #TO DO
-        #nie działa edycja pracownika- issue zgłoszone
+        # czekamy na załadowanie tabelki
+        wait_for(delay)
+
+        # klikam przycisk "dlugopis" przy pracowniku, ktorego chce edytowac
+        click_button(driver, By.ID, 'EmployeeManagementEditButtonJD+' + login)
+        wait_for(delay)
+
+
+
+
+
 
     #usunięcie pracownika
         # czekamy na załadowanie tabelki
-        wait_for_element(driver, By.CSS_SELECTOR,
-                         "div.MuiDataGrid-virtualScrollerContent.css-1xdhyk6", False)
-
-        click_button(driver, By.ID, "EmployeeManagementDeleteButtonJD+employee")
         wait_for(delay)
 
-        #sprawdzenie czy pracownik usunął się
-        #TO DO
-        #? po czym sprawdzić jak nie mamy id
+        # klikam przycisk "kosz" przy pracowniku, ktorego chce usunac
+        click_button(driver, By.ID, 'EmployeeManagementDeleteButtonJD+' + login)
+        wait_for(delay)
+
+        #sprawdzam czy wyswietla sie pop up
+        wait_for_element(driver, By.CSS_SELECTOR,
+                         "div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation24.MuiDialog-paper.MuiDialog-paperScrollPaper.MuiDialog-paperWidthSm.css-uhb5lp", False)
+
+        #potwierdzenie usuniecia
+        click_button(driver, By.CSS_SELECTOR, "button.MuiButtonBase-root.MuiButton-root.MuiButton-text.MuiButton-textError.MuiButton-sizeMedium.MuiButton-textSizeMedium.MuiButton-colorError.MuiButton-root.MuiButton-text.MuiButton-textError.MuiButton-sizeMedium.MuiButton-textSizeMedium.MuiButton-colorError.css-51s2g2")
+
+        #sprawdzam czy pracownik usunał się
+        wait_for(delay)
+        if driver.find_element(By.ID, 'EmployeeManagementDeleteButtonJD+' + login).is_displayed():
+            return False
+
+        #odswiezam strone
+        driver.refresh()
+        if driver.find_element(By.ID, 'EmployeeManagementDeleteButtonJD+' + login).is_displayed():
+            return False
+
 
 
     except Exception as e:
