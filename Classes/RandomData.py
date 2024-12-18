@@ -14,6 +14,10 @@ class RandomData:
         return RandomData.fake.word()
 
     @staticmethod
+    def generate_number():
+        return RandomData.fake.random_number()
+
+    @staticmethod
     def generate_address():
         return RandomData.fake.street_address()
 
