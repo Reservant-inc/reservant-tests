@@ -36,39 +36,41 @@ def test_guest_screen (driver):
         wait_for(delay)
 
         # 1.1 sprawdzamy czy można kliknąć "menu"
-        #potrzebne ID
-
+        #click_button(driver, By.ID, "menu-guest")
         # 1.2 sprawdzamy wyswietlane menu
-
-
+        # menu nie wyświetla się dla ekranu gościa
+        #driver.back()
+        # actions.click_and_hold(map_element).move_by_offset(100, 100).release().perform()
+        # click_text_field(driver, By.ID, "homePage-listItemButton")
+        # wait_for(delay)
 
         # 2.1 sprawdzamy czy można kliknąć "zarezerwuj"
-        #potrzebne ID
-        #click_button(driver, By.CSS_SELECTOR,
-                    # '.h-12.w-12.rounded-full.border-[1px].border-primary.text-primary.transition.hover\\:scale-105.hover\\:bg-primary.hover\\:text-white.dark\\:border-secondary.dark\\:text-secondary.dark\\:text-secondary.dark\\:hover\\:bg-secondary.dark\\:hover\\:text-black')
+        click_button(driver, By.ID, "reservation-guest")
         # 2.2 przenosi nas do ekranu logowania
-
-
+        wait_for_url_to_be(driver, login_url, True)
+        driver.back()
+        #musimy poruszyć mapa, zeby pojawila sie restauracja
+        map_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "map"))
+        )
+        actions.click_and_hold(map_element).move_by_offset(100, 100).release().perform()
+        click_text_field(driver, By.ID, "homePage-listItemButton")
+        wait_for(delay)
 
         # 3.1 sprawdzamy czy można kliknąć "sprawdz wydarzenie"
-        #potrzebne ID
-
+        click_button(driver, By.ID, "events-guest")
         # 3.2 przenosi do ekranu logowania
-
-
+        wait_for_url_to_be(driver, login_url, True)
+        driver.back()
 
         #sprawdzamy, ze wyswietla sie przycisk "LOGIN"
-        #potrzebne ID
-        click_button(driver, By.XPATH, "//button[text()='LOGIN']")
+        click_button(driver, By.ID, "login-guest-navbar")
         current_url = driver.current_url
         assert current_url == login_url
-
-        #go back
         driver.back()
 
         #sprawdzamy, ze wyswietla sie przycisk "REGISTER"
-        #potrzebne ID
-        click_button(driver, By.XPATH, "//button[text()='REGISTER']")
+        click_button(driver, By.ID, "register-guest-navbar")
         current_url = driver.current_url
         assert current_url == register_url
 
