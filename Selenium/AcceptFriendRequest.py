@@ -30,22 +30,26 @@ def test_accept_friend_invite(driver):
         enter_text(driver, By.CSS_SELECTOR, "input.clean-input.h-8.w-\\[250px\\].p-2.placeholder\\:text-grey-2.dark\\:text-grey-1", "Paul Atreides")
         wait_for(delay)
 
-        # Wysyłanie zaproszenia do znajomych do pierwszego wyszukanego znajomego (w tym przypadku ...)
+        # Wysyłanie zaproszenia do znajomych do pierwszego wyszukanego znajomego (w tym przypadku PA)
         click_button(driver, By.XPATH, "(//button[contains(text(), 'Send request') or contains(text(), 'Undo request')])[1]")
         wait_for(delay)
 
-        # Sprawdzam czy poprawnie wysłano zaproszenie - tekst zmienia się na "Undo request"
+        # Sprawdzam czy poprawnie wysłano zaproszenie - tekst w przycisku zmienia się na "Undo request"
         # Jeżeli zaproszenie było już wcześniej wysłane to wyrzuca błąd i kończy test
         find_text_in_elements(driver, By.XPATH, "(//button[contains(text(), 'Send request') or contains(text(), 'Undo request')])[1]", "Undo request", critical=True)
 
         # Akceptacja zaproszenia z poziomu powiadomień
 
         # Wylogowywanie
+        # todo podmienić jak pojawi się mój pull request z fixem na serwerze
         click_button(driver, By.ID, "ToolsButton")
-        click_button(driver, By.ID, "logoutDropdownItem")
+        # click_button(driver, By.ID, "logoutDropdownItem")
+        click_button(driver, By.XPATH, "//span[contains(text(), 'Wylogowanie') or contains(text(), 'Sign out')]", "Wylogowanie lub Sign out")
 
-        # Logowanie na ...
-        click_button(driver, By.ID, "serverLink")
+
+        # Logowanie na PA
+        # TODO quick fix na teraz, trzeba dorobić id nowym przyciskom logowania
+        click_button(driver, By.XPATH, "//button[contains(text(), 'LOGIN')]")
         enter_text(driver, By.ID, "login", "PA")
         enter_text(driver, By.ID, "password", "Pa$$w0rd")
 
@@ -54,21 +58,19 @@ def test_accept_friend_invite(driver):
         wait_for(delay)
 
         # Kliakamy guzik powiadomień
-        wait_for_element(driver, By.CSS_SELECTOR, "svg[data-testid='NotificationsIcon']").click()
+        wait_for_element(driver, By.ID, "navbarNotificationsButton").click()
         wait_for(delay)
 
         # Klikamy guzik "Wyświetl więcej"
-        click_button(driver, By.CSS_SELECTOR,
-                     "button.bg-primary.hover\\:bg-primary-2.text-white.my-2.py-1.px-3.rounded.transition.hover\\:scale-105")
+        click_button(driver, By.ID, "showMoreNotificationsButton")
         wait_for(delay)
 
         # Klikamy zakładkę Friends
-        wait_for_element(driver, By.XPATH, "//div[text()='Friends']").click()
+        click_button(driver, By.ID, "notificationsFriendsTab")
         wait_for(delay)
 
         # Szukam i klikam "Zaakceptuj"
-        click_button(driver, By.CSS_SELECTOR,
-                     "button.bg-primary.hover\\:bg-primary-2.text-white.p-1.rounded.transition.hover\\:scale-105")
+        click_button(driver, By.ID, "JohnDoeNotificationAcceptFriendRequest")
         wait_for(delay)
 
         # Test się powiódł
