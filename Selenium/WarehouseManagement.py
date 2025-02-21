@@ -29,11 +29,53 @@ def test_warehouse_management(driver):
         enter_text(driver, By.NAME, "name", RandomData.generate_word())
         select_option_by_visible_text(driver, By.NAME, "unitOfMeasurement", RandomData.generate_unit_of_measurement())
 
-        # TODO dodać wprowadzenie wartości do pól z ilościami, po tym jak zostaną im nadane unikatowe nazwy/id
+        # Wypełnienie formularza składnika
+        ingredient_name = RandomData.generate_word()
+        enter_text(driver, By.NAME, "name", ingredient_name)
+        unit = RandomData.generate_unit_of_measurement()
+        select_option_by_visible_text(driver, By.NAME, "unitOfMeasurement", unit)
 
-        # TODO dodać click_button dla przycisku do dodawania składnika
+        # Wprowadzenie wartości ilościowych
+        enter_text(driver, By.NAME, "minimalAmount", RandomData.generate_number())
+        enter_text(driver, By.NAME, "amount", RandomData.generate_number())
 
-        # TODO dodać zmodyfikowanie/usunięcie składnika
+        # Dodanie składnika
+        click_button(driver, By.ID, "SubmitAddIngredientDialog")
+        wait_for(delay)
+
+        # FIXME mimo poprawnego wyslania na backend, dodany skladnik nie wyswietla się
+        # Weryfikacja dodania składnika
+        find_text_in_elements(driver, By.NAME, "name", ingredient_name)
+
+        # Modyfikacja składnika
+        edit_button_id = f'IngredientEditButton{ingredient_name}'
+        click_button(driver, By.ID, edit_button_id)
+        wait_for_element(driver, By.ID, "ingredientEditDialog")
+
+        new_ingredient_name = ingredient_name + "_updated"
+        enter_text(driver, By.NAME, "name", new_ingredient_name)
+
+        # Zapisanie zmian
+        click_button(driver, By.ID, "IngredientSaveButton")
+        wait_for(delay)
+
+        # Weryfikacja modyfikacji
+        find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="name"]', new_ingredient_name)
+
+        # Usunięcie składnika
+        delete_button_id = f'IngredientDeleteButton{new_ingredient_name}'
+        click_button(driver, By.ID, delete_button_id)
+        click_button(driver, By.ID, "ConfirmDeletionButton")
+        wait_for(delay)
+
+        # Weryfikacja usunięcia
+        try:
+            find_text_in_elements(driver, By.CSS_SELECTOR, 'div[data-field="name"]', new_ingredient_name)
+            raise Exception("Składnik nie został usunięty.")
+        except NoSuchElementException:
+            pass  # Składnik został pomyślnie usunięty
+
+        return True  # Test przeszedł pomyślnie
 
         # TODO dodać wypełnienie formularza do listy zakupów
 
